@@ -1,7 +1,7 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://b86ugiwyyg5jt"]
 
-[ext_resource type="Shader" uid="uid://b4uayu5o5ocv" path="res://Assets/Background/Background.gdshader" id="1_5w6rt"]
-[ext_resource type="Texture2D" uid="uid://chlqvytcrmyqd" path="res://Assets/Background/Background.png" id="2_8a5tc"]
+[ext_resource type="Shader" uid="uid://b4uayu5o5ocv" path="res://assets/background/Background.gdshader" id="1_5w6rt"]
+[ext_resource type="Texture2D" uid="uid://chlqvytcrmyqd" path="res://assets/background/Background.png" id="2_8a5tc"]
 
 [resource]
 shader = ExtResource("1_5w6rt")

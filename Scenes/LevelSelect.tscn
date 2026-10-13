@@ -1,12 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://dc1f2ce4tmjiu"]
+[gd_scene format=3 uid="uid://dc1f2ce4tmjiu"]
 
-[ext_resource type="Theme" uid="uid://cuj4xxk1q18g6" path="res://Assets/GUI/MainTheme.tres" id="1_6v3vl"]
-[ext_resource type="PackedScene" uid="uid://8bn5wiq2ayda" path="res://Assets/LevelSelect/LevelGoto.tscn" id="1_ar7pr"]
-[ext_resource type="Script" path="res://Assets/LevelSelect/LevelSelect.gd" id="1_re3p7"]
-[ext_resource type="Material" uid="uid://b86ugiwyyg5jt" path="res://Assets/Background/Background.tres" id="4_1vpcj"]
-[ext_resource type="Script" path="res://Assets/LevelSelect/Username.gd" id="5_bho12"]
+[ext_resource type="Theme" uid="uid://cuj4xxk1q18g6" path="res://assets/GUI/MainTheme.tres" id="1_6v3vl"]
+[ext_resource type="PackedScene" uid="uid://8bn5wiq2ayda" path="res://assets/levelselect/LevelGoto.tscn" id="1_ar7pr"]
+[ext_resource type="Script" uid="uid://bpr5a36dye8se" path="res://assets/levelselect/LevelSelect.gd" id="1_re3p7"]
+[ext_resource type="Material" uid="uid://b86ugiwyyg5jt" path="res://assets/background/Background.tres" id="4_1vpcj"]
+[ext_resource type="Script" uid="uid://2xujj3kdn18b" path="res://assets/levelselect/Username.gd" id="5_bho12"]
 
-[node name="LevelSelector" type="Control"]
+[node name="LevelSelector" type="Control" unique_id=1995600228]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 640.0
@@ -15,7 +15,7 @@ theme = ExtResource("1_6v3vl")
 script = ExtResource("1_re3p7")
 levelGoto = ExtResource("1_ar7pr")
 
-[node name="Background" type="ColorRect" parent="."]
+[node name="Background" type="ColorRect" parent="." unique_id=1435436823]
 material = ExtResource("4_1vpcj")
 layout_mode = 1
 anchors_preset = 15
@@ -25,7 +25,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="VBox" type="VBoxContainer" parent="." unique_id=279423141]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -34,18 +34,18 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBox"]
+[node name="MarginContainer" type="MarginContainer" parent="VBox" unique_id=883940230]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 
-[node name="Panel" type="PanelContainer" parent="VBox/MarginContainer"]
+[node name="Panel" type="PanelContainer" parent="VBox/MarginContainer" unique_id=507491395]
 custom_minimum_size = Vector2(400, 40)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 size_flags_stretch_ratio = 0.0
 
-[node name="Label" type="Label" parent="VBox/MarginContainer/Panel"]
+[node name="Label" type="Label" parent="VBox/MarginContainer/Panel" unique_id=269408988]
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
 text = "Shader Laser House Invader"
@@ -53,22 +53,22 @@ horizontal_alignment = 1
 vertical_alignment = 1
 text_overrun_behavior = 4
 
-[node name="Grid" type="GridContainer" parent="VBox"]
+[node name="Grid" type="GridContainer" parent="VBox" unique_id=513067486]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 6
 columns = 4
 
-[node name="Settings" type="HBoxContainer" parent="VBox"]
+[node name="Settings" type="HBoxContainer" parent="VBox" unique_id=1277413024]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBox/Settings"]
+[node name="Label" type="Label" parent="VBox/Settings" unique_id=1285850797]
 layout_mode = 2
 text = "Leader Board Name (Blank to ignore)
 "
 
-[node name="Username" type="LineEdit" parent="VBox/Settings"]
+[node name="Username" type="LineEdit" parent="VBox/Settings" unique_id=1331463323]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 placeholder_text = "[USERNAME]"

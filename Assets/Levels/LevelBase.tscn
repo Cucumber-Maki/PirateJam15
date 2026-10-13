@@ -1,82 +1,82 @@
-[gd_scene load_steps=18 format=3 uid="uid://ceox7v6p25unb"]
+[gd_scene format=3 uid="uid://ceox7v6p25unb"]
 
-[ext_resource type="TileSet" uid="uid://c1tgrgs3ys4wn" path="res://Assets/Levels/Tilesets/Walls.tres" id="1_7reon"]
-[ext_resource type="Script" path="res://Assets/Levels/Level.gd" id="1_rok26"]
-[ext_resource type="TileSet" uid="uid://bk1b8h00etn7q" path="res://Assets/Levels/Tilesets/Entities.tres" id="2_6agm3"]
-[ext_resource type="Script" path="res://Assets/Levels/ObjectProcess.gd" id="2_na5lr"]
-[ext_resource type="TileSet" uid="uid://d3g8l3h5hish0" path="res://Assets/Levels/Tilesets/Floor.tres" id="3_o3g7d"]
-[ext_resource type="Script" path="res://Assets/Levels/Floor.gd" id="3_yhxxa"]
-[ext_resource type="TileSet" uid="uid://bwvt7r64dbdjs" path="res://Assets/Levels/Tilesets/BackgroundEntities.tres" id="4_l05dv"]
-[ext_resource type="Script" path="res://Assets/Levels/Lighting.gd" id="5_d8cb2"]
-[ext_resource type="Material" uid="uid://b86ugiwyyg5jt" path="res://Assets/Background/Background.tres" id="5_vi568"]
-[ext_resource type="Script" path="res://Assets/Levels/Wiring.gd" id="7_qv88h"]
-[ext_resource type="Theme" uid="uid://cuj4xxk1q18g6" path="res://Assets/GUI/MainTheme.tres" id="10_ychug"]
-[ext_resource type="Script" path="res://Assets/Levels/LevelComplete.gd" id="12_olgnu"]
-[ext_resource type="Material" uid="uid://crxfalfjr0jag" path="res://Assets/GUI/MenuBlurLight.tres" id="13_34gyf"]
-[ext_resource type="Texture2D" uid="uid://b7p5su588l7yl" path="res://Assets/Artefacts/0.png" id="13_jbymt"]
-[ext_resource type="Material" uid="uid://uqnhojnx3uma" path="res://Assets/GUI/MenuBlur.tres" id="13_nh5o4"]
-[ext_resource type="Script" path="res://Assets/Levels/LeaderBoard.gd" id="16_med0f"]
+[ext_resource type="TileSet" uid="uid://c1tgrgs3ys4wn" path="res://assets/levels/Tilesets/Walls.tres" id="1_7reon"]
+[ext_resource type="Script" uid="uid://ctpv6dnak6qj6" path="res://assets/levels/Level.gd" id="1_rok26"]
+[ext_resource type="TileSet" uid="uid://bk1b8h00etn7q" path="res://assets/levels/Tilesets/Entities.tres" id="2_6agm3"]
+[ext_resource type="Script" uid="uid://bwoal4hyh1cvv" path="res://assets/levels/ObjectProcess.gd" id="2_na5lr"]
+[ext_resource type="TileSet" uid="uid://d3g8l3h5hish0" path="res://assets/levels/Tilesets/Floor.tres" id="3_o3g7d"]
+[ext_resource type="Script" uid="uid://ckpq186qbqkpe" path="res://assets/levels/Floor.gd" id="3_yhxxa"]
+[ext_resource type="TileSet" uid="uid://bwvt7r64dbdjs" path="res://assets/levels/Tilesets/BackgroundEntities.tres" id="4_l05dv"]
+[ext_resource type="Script" uid="uid://c1iwae8k2dxr3" path="res://assets/levels/Lighting.gd" id="5_d8cb2"]
+[ext_resource type="Material" uid="uid://b86ugiwyyg5jt" path="res://assets/background/Background.tres" id="5_vi568"]
+[ext_resource type="Script" uid="uid://cv101c54gbyba" path="res://assets/levels/Wiring.gd" id="7_qv88h"]
+[ext_resource type="Theme" uid="uid://cuj4xxk1q18g6" path="res://assets/GUI/MainTheme.tres" id="10_ychug"]
+[ext_resource type="Script" uid="uid://bh7dfkl7xqt7u" path="res://assets/levels/LevelComplete.gd" id="12_olgnu"]
+[ext_resource type="Material" uid="uid://crxfalfjr0jag" path="res://assets/GUI/MenuBlurLight.tres" id="13_34gyf"]
+[ext_resource type="Texture2D" uid="uid://b7p5su588l7yl" path="res://assets/artefacts/0.png" id="13_jbymt"]
+[ext_resource type="Material" uid="uid://uqnhojnx3uma" path="res://assets/GUI/MenuBlur.tres" id="13_nh5o4"]
+[ext_resource type="Script" uid="uid://bd2aq8uq2mcvd" path="res://assets/levels/LeaderBoard.gd" id="16_med0f"]
 
 [sub_resource type="Curve" id="Curve_214x6"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.554585, 0.241758), 0.0, 0.0, 0, 0, Vector2(1, 1), 5.17277, 0.0, 0, 0]
 point_count = 3
 
-[node name="Level" type="Node2D"]
+[node name="Level2" type="Node2D" unique_id=1127187215]
 z_index = 2
 script = ExtResource("1_rok26")
 
-[node name="Camera" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="." unique_id=501677605]
 
-[node name="Objects" type="Node2D" parent="."]
+[node name="Objects" type="Node2D" parent="." unique_id=1982462909]
 script = ExtResource("2_na5lr")
 animationLerp = SubResource("Curve_214x6")
 metadata/_edit_lock_ = true
 
-[node name="Floor" type="TileMap" parent="Objects"]
+[node name="Floor" type="TileMap" parent="Objects" unique_id=10583673]
 tile_set = ExtResource("3_o3g7d")
 format = 2
 script = ExtResource("3_yhxxa")
 metadata/_edit_lock_ = true
 
-[node name="Walls" type="TileMap" parent="Objects"]
+[node name="Walls" type="TileMap" parent="Objects" unique_id=299735768]
 material = ExtResource("5_vi568")
 tile_set = ExtResource("1_7reon")
 format = 2
 metadata/_edit_lock_ = true
 
-[node name="Lighting" type="Node2D" parent="Objects"]
+[node name="Lighting" type="Node2D" parent="Objects" unique_id=1827519217]
 script = ExtResource("5_d8cb2")
 metadata/_edit_lock_ = true
 
-[node name="BackgroundEntities" type="TileMap" parent="Objects"]
+[node name="BackgroundEntities" type="TileMap" parent="Objects" unique_id=1060279346]
 tile_set = ExtResource("4_l05dv")
 format = 2
 metadata/_edit_lock_ = true
 
-[node name="Animation" type="TileMap" parent="Objects"]
+[node name="Animation" type="TileMap" parent="Objects" unique_id=1034217521]
 tile_set = ExtResource("2_6agm3")
 format = 2
 metadata/_edit_lock_ = true
 
-[node name="Entities" type="TileMap" parent="Objects"]
+[node name="Entities" type="TileMap" parent="Objects" unique_id=1396902085]
 tile_set = ExtResource("2_6agm3")
 format = 2
 metadata/_edit_lock_ = true
 
-[node name="Wiring" type="Node2D" parent="Objects"]
+[node name="Wiring" type="Node2D" parent="Objects" unique_id=73685959]
 script = ExtResource("7_qv88h")
 metadata/_edit_lock_ = true
 
-[node name="Level Buttons" type="Node2D" parent="."]
+[node name="Level Buttons" type="Node2D" parent="." unique_id=1391172687]
 
-[node name="Level Select Button" type="Button" parent="Level Buttons"]
+[node name="Level Select Button" type="Button" parent="Level Buttons" unique_id=1708133063]
 offset_right = 72.0
 offset_bottom = 36.0
 focus_mode = 0
 theme = ExtResource("10_ychug")
 text = "Levels"
 
-[node name="Undo Button" type="Button" parent="Level Buttons"]
+[node name="Undo Button" type="Button" parent="Level Buttons" unique_id=683739973]
 offset_top = 48.0
 offset_right = 72.0
 offset_bottom = 84.0
@@ -85,7 +85,7 @@ theme = ExtResource("10_ychug")
 text = "Undo
 "
 
-[node name="Restart Button" type="Button" parent="Level Buttons"]
+[node name="Restart Button" type="Button" parent="Level Buttons" unique_id=332250839]
 offset_top = 96.0
 offset_right = 72.0
 offset_bottom = 132.0
@@ -94,9 +94,9 @@ theme = ExtResource("10_ychug")
 text = "Restart
 "
 
-[node name="Stats" type="Node2D" parent="."]
+[node name="Stats" type="Node2D" parent="." unique_id=653210393]
 
-[node name="Move Count" type="Label" parent="Stats"]
+[node name="Move Count" type="Label" parent="Stats" unique_id=1397636553]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -112,7 +112,7 @@ text = "Move Count: 0"
 horizontal_alignment = 1
 vertical_alignment = 2
 
-[node name="Event Mask" type="Control" parent="."]
+[node name="Event Mask" type="Control" parent="." unique_id=2111126917]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -120,11 +120,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Level Complete" type="CanvasLayer" parent="."]
+[node name="Level Complete" type="CanvasLayer" parent="." unique_id=1241201284]
 visible = false
 script = ExtResource("12_olgnu")
 
-[node name="Margin" type="PanelContainer" parent="Level Complete"]
+[node name="Margin" type="PanelContainer" parent="Level Complete" unique_id=1513295626]
 material = ExtResource("13_34gyf")
 anchors_preset = 15
 anchor_right = 1.0
@@ -133,21 +133,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("10_ychug")
 
-[node name="HBox" type="HBoxContainer" parent="Level Complete/Margin"]
+[node name="HBox" type="HBoxContainer" parent="Level Complete/Margin" unique_id=2064349585]
 layout_mode = 2
 alignment = 1
 
-[node name="Panel" type="PanelContainer" parent="Level Complete/Margin/HBox"]
+[node name="Panel" type="PanelContainer" parent="Level Complete/Margin/HBox" unique_id=1053636035]
 material = ExtResource("13_nh5o4")
 custom_minimum_size = Vector2(300, 290)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="VBox" type="VBoxContainer" parent="Level Complete/Margin/HBox/Panel"]
+[node name="VBox" type="VBoxContainer" parent="Level Complete/Margin/HBox/Panel" unique_id=1998857811]
 layout_mode = 2
 
-[node name="Artefact" type="TextureRect" parent="Level Complete/Margin/HBox/Panel/VBox"]
+[node name="Artefact" type="TextureRect" parent="Level Complete/Margin/HBox/Panel/VBox" unique_id=512770615]
 custom_minimum_size = Vector2(160, 160)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -155,23 +155,23 @@ size_flags_vertical = 4
 texture = ExtResource("13_jbymt")
 stretch_mode = 5
 
-[node name="VBox" type="VBoxContainer" parent="Level Complete/Margin/HBox/Panel/VBox"]
+[node name="VBox" type="VBoxContainer" parent="Level Complete/Margin/HBox/Panel/VBox" unique_id=909284717]
 layout_mode = 2
 
-[node name="Artefact" type="Label" parent="Level Complete/Margin/HBox/Panel/VBox/VBox"]
+[node name="Artefact" type="Label" parent="Level Complete/Margin/HBox/Panel/VBox/VBox" unique_id=1651813586]
 layout_mode = 2
 text = "Artefact"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Background" type="ColorRect" parent="Level Complete/Margin/HBox/Panel/VBox/VBox"]
+[node name="Background" type="ColorRect" parent="Level Complete/Margin/HBox/Panel/VBox/VBox" unique_id=732004546]
 custom_minimum_size = Vector2(240, 35)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(0, 0, 0, 1)
 
-[node name="ArtefactName" type="Label" parent="Level Complete/Margin/HBox/Panel/VBox/VBox/Background"]
+[node name="ArtefactName" type="Label" parent="Level Complete/Margin/HBox/Panel/VBox/VBox/Background" unique_id=293641700]
 custom_minimum_size = Vector2(200, 12)
 layout_mode = 1
 anchors_preset = 15
@@ -184,37 +184,39 @@ text = "- ??? -"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Found" type="Label" parent="Level Complete/Margin/HBox/Panel/VBox/VBox"]
+[node name="Found" type="Label" parent="Level Complete/Margin/HBox/Panel/VBox/VBox" unique_id=2013839015]
 layout_mode = 2
 text = "Found."
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="Level Complete/Margin/HBox/Panel/VBox"]
+[node name="Button" type="Button" parent="Level Complete/Margin/HBox/Panel/VBox" unique_id=664010835]
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
 text = "Go To Levels Menu"
 
-[node name="Spacer" type="Container" parent="Level Complete/Margin/HBox"]
+[node name="Spacer" type="Container" parent="Level Complete/Margin/HBox" unique_id=1420353269]
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
 
-[node name="Leader Board" type="TabContainer" parent="Level Complete/Margin/HBox"]
+[node name="Leader Board" type="TabContainer" parent="Level Complete/Margin/HBox" unique_id=454407299]
 material = ExtResource("13_nh5o4")
 custom_minimum_size = Vector2(235, 320)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 tab_alignment = 1
+current_tab = 0
 tab_focus_mode = 0
 script = ExtResource("16_med0f")
 
-[node name="Personal" type="TabBar" parent="Level Complete/Margin/HBox/Leader Board"]
+[node name="Personal" type="TabBar" parent="Level Complete/Margin/HBox/Leader Board" unique_id=599364991]
 layout_mode = 2
+metadata/_tab_index = 0
 
-[node name="Board" type="HBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal"]
+[node name="Board" type="HBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal" unique_id=1719717360]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -223,54 +225,55 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Rank" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board"]
+[node name="Rank" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board" unique_id=488129020]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Rank"]
+[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Rank" unique_id=434695756]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 text = "Rank"
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Rank"]
+[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Rank" unique_id=1962505180]
 layout_mode = 2
 
-[node name="VSeparator1" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board"]
+[node name="VSeparator1" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board" unique_id=1511220641]
 layout_mode = 2
 
-[node name="Name" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board"]
+[node name="Name" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board" unique_id=687587634]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Name"]
+[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Name" unique_id=1523283158]
 custom_minimum_size = Vector2(120, 30)
 layout_mode = 2
 text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Name"]
+[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Name" unique_id=742740153]
 layout_mode = 2
 
-[node name="VSeparator2" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board"]
+[node name="VSeparator2" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board" unique_id=1737814634]
 layout_mode = 2
 
-[node name="Score" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board"]
+[node name="Score" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board" unique_id=832098948]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Score"]
+[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Score" unique_id=1736147913]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 text = "Score"
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Score"]
+[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Personal/Board/Score" unique_id=1708076537]
 layout_mode = 2
 
-[node name="Global" type="TabBar" parent="Level Complete/Margin/HBox/Leader Board"]
+[node name="Global" type="TabBar" parent="Level Complete/Margin/HBox/Leader Board" unique_id=1599550493]
 visible = false
 layout_mode = 2
+metadata/_tab_index = 1
 
-[node name="Board" type="HBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global"]
+[node name="Board" type="HBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global" unique_id=485979684]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -279,47 +282,47 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="Rank" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global/Board"]
+[node name="Rank" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global/Board" unique_id=413178426]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Rank"]
+[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Rank" unique_id=702998568]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 text = "Rank"
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Rank"]
+[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Rank" unique_id=1765227083]
 layout_mode = 2
 
-[node name="VSeparator1" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board"]
+[node name="VSeparator1" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board" unique_id=1667050546]
 layout_mode = 2
 
-[node name="Name" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global/Board"]
+[node name="Name" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global/Board" unique_id=58949921]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Name"]
+[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Name" unique_id=208274451]
 custom_minimum_size = Vector2(120, 30)
 layout_mode = 2
 text = "Name"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Name"]
+[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Name" unique_id=2047203201]
 layout_mode = 2
 
-[node name="VSeparator2" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board"]
+[node name="VSeparator2" type="VSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board" unique_id=399202313]
 layout_mode = 2
 
-[node name="Score" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global/Board"]
+[node name="Score" type="VBoxContainer" parent="Level Complete/Margin/HBox/Leader Board/Global/Board" unique_id=1169286048]
 layout_mode = 2
 
-[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Score"]
+[node name="Header" type="Label" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Score" unique_id=1470677872]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 text = "Score"
 vertical_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Score"]
+[node name="HSeparator" type="HSeparator" parent="Level Complete/Margin/HBox/Leader Board/Global/Board/Score" unique_id=92367853]
 layout_mode = 2
 
 [connection signal="button_up" from="Level Buttons/Level Select Button" to="." method="gotoLevelSelect"]

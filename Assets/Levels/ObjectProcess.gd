@@ -448,5 +448,3 @@ func stateAddWiring(pos : Vector2i, state : bool):
 		"pos": pos,
 		"state": state,
 	});
-
-

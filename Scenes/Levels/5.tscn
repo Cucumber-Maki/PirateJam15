@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ciw0xag555wtq"]
+[gd_scene format=3 uid="uid://ciw0xag555wtq"]
 
-[ext_resource type="PackedScene" uid="uid://ceox7v6p25unb" path="res://Assets/Levels/LevelBase.tscn" id="1_lnssc"]
-[ext_resource type="Script" path="res://Assets/Levels/WireConnection.gd" id="2_015jq"]
+[ext_resource type="PackedScene" uid="uid://ceox7v6p25unb" path="res://assets/levels/LevelBase.tscn" id="1_lnssc"]
+[ext_resource type="Script" uid="uid://c53wrtxi7gbho" path="res://Assets/Levels/WireConnection.gd" id="2_015jq"]
 
 [sub_resource type="Resource" id="Resource_ko17t"]
 script = ExtResource("2_015jq")

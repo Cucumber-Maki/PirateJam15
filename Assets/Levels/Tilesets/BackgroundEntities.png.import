@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2cvl3oryoorn"
-path="res://.godot/imported/BackgroundEntities.png-a0cb4bd638ba46bacd80ab08d6887481.ctex"
+path="res://.godot/imported/BackgroundEntities.png-474ce4c6c335b2a2998bef881cb9475a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Levels/Tilesets/BackgroundEntities.png"
-dest_files=["res://.godot/imported/BackgroundEntities.png-a0cb4bd638ba46bacd80ab08d6887481.ctex"]
+source_file="res://assets/levels/Tilesets/BackgroundEntities.png"
+dest_files=["res://.godot/imported/BackgroundEntities.png-474ce4c6c335b2a2998bef881cb9475a.ctex"]
 
 [params]
 
