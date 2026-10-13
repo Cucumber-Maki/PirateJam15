@@ -6,7 +6,7 @@ extends TileMap
 		if (value):
 			generate();
 		
-func generate():
+func generate() -> void:
 	if (!Engine.is_editor_hint()): return;
 	
 	clear();

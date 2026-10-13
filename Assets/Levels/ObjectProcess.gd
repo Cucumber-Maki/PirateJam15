@@ -102,7 +102,7 @@ class LightButton:
 	var position : Vector2i;
 	var color : int;
 	var lit : bool;
-	func _init(_position : Vector2i, _color : int):
+	func _init(_position : Vector2i, _color : int) -> void:
 		position = _position;
 		color = _color;
 		lit = false;
@@ -111,7 +111,7 @@ class Door:
 	var position : Vector2i;
 	var color : int;
 	var open : bool;
-	func _init(_position : Vector2i, _color):
+	func _init(_position : Vector2i, _color : int) -> void:
 		position = _position;
 		color = _color;
 		open = false;
@@ -119,7 +119,7 @@ class Door:
 var endPos : Vector2i = Vector2i(9999, 9999);
 var lightButtons : Array[LightButton];
 var doors : Array[Door];
-func registerLighting():
+func registerLighting() -> void:
 	$Lighting.clearEmitters();
 	
 	var entityRect : Rect2i = $Entities.get_used_rect();
@@ -159,7 +159,7 @@ func registerLighting():
 				EntityTileType.EntityTileType_End:
 					endPos = pos;
 
-func updateLighting():
+func updateLighting() -> void:
 	$Lighting.updateLighting();
 	var postLightingUpdateNeeded : bool = false;
 	
@@ -179,7 +179,7 @@ func updateLighting():
 		$Wiring.setInput(lightButton.position, lightButton.lit);	
 	
 	for door : Door in doors:
-		var open = $Wiring.getOuput(door.position);
+		var open : bool = $Wiring.getOuput(door.position);
 		
 		if (door.open == open): continue;
 		door.open = open;
@@ -205,14 +205,14 @@ func updateLighting():
 	if (postLightingUpdateNeeded):
 		$Lighting.updateLighting();
 	
-func _ready():
+func _ready() -> void:
 	registerLighting();
 	updateLighting();
 	
 	# Ignore setup states.
 	activeState.clear();
 	
-func _process(delta):
+func _process(delta : float) -> void:
 	if ($"../Level Complete".visible):
 		set_process(false);
 		return;
@@ -223,7 +223,7 @@ func _process(delta):
 		processInput();
 
 var inputMovementLastPrioritizedY : bool = false;
-func processInput():
+func processInput() -> void:
 	# Undo button.
 	if (Input.is_action_just_pressed("player_undo")):
 		statePop();
@@ -313,7 +313,7 @@ var animationProcessing : bool = false;
 var animationProgress : float = 0;
 var animationMoveTarget : Vector2 = Vector2.ZERO;
 var animationTileTargetOffset : Vector2i = Vector2i.ZERO;
-func processAnimation(delta):
+func processAnimation(delta : float) -> void:
 	# Update animation progress.
 	animationProgress = min(animationProgress + (delta / animationTime), 1.0);
 	# Move position.
@@ -359,13 +359,13 @@ enum StateType {
 	StateType_Wiring,
 };
 
-func stateGotoNext():
+func stateGotoNext() -> void:
 	states.push_back(activeState);
 	activeState = [];
 	updateMoveCountText();
 
 var stateTracking : bool = true;
-func statePop():
+func statePop() -> void:
 	if (states.size() <= 0): return;
 	
 	activeState.append_array(states.pop_back());
@@ -418,12 +418,12 @@ func statePop():
 	stateTracking = true;
 	updateMoveCountText();
 
-func stateUnwind():
+func stateUnwind() -> void:
 	# This is cursed and i think its hilarious
 	while (!states.is_empty()): 
 		statePop();
 
-func stateAddMovement(movement : Vector2i, affectedTiles : Array[Vector2i]):
+func stateAddMovement(movement : Vector2i, affectedTiles : Array[Vector2i]) -> void:
 	if (!stateTracking): return;
 	
 	activeState.push_back({
@@ -433,14 +433,14 @@ func stateAddMovement(movement : Vector2i, affectedTiles : Array[Vector2i]):
 	});
 	stateGotoNext();
 	
-func updateMoveCountText(): 
+func updateMoveCountText() -> void: 
 	var moveCount : int = states.size();
 	$"../Stats/Move Count".text = "Move Count: " + str(moveCount);
 	LeaderBoard.levelScore = moveCount;
 	if (levelComplete):
 		$"../Level Complete".levelComplete();
 	
-func stateAddWiring(pos : Vector2i, state : bool):
+func stateAddWiring(pos : Vector2i, state : bool) -> void:
 	if (!stateTracking): return;
 	
 	activeState.push_back({

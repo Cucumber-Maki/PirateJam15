@@ -11,7 +11,7 @@ const requestHeaders : Array[String] = [
 ];
 var getRequest : HTTPRequest;
 var submitRequest : HTTPRequest;
-func _ready():
+func _ready() -> void:
 	getRequest = HTTPRequest.new()
 	add_child(getRequest)
 	getRequest.request_completed.connect(self.processRequest)
@@ -19,7 +19,7 @@ func _ready():
 	add_child(submitRequest)
 	submitRequest.request_completed.connect(self.processRequest)
 
-func visibilityChanged():
+func visibilityChanged() -> void:
 	if (!visible): return;
 	
 	if (username == ""): 
@@ -28,10 +28,10 @@ func visibilityChanged():
 	else:
 		submitScore();
 	
-func processRequest(result, responseCode, headers, body):
+func processRequest(result : int, responseCode : int, headers : PackedStringArray, body : PackedByteArray) -> void:
 	var json : JSON = JSON.new()
 	json.parse(body.get_string_from_utf8())
-	var response = json.get_data();
+	var response : Variant = json.get_data();
 	print(response);
 	if (response == null): return;
 	
@@ -41,34 +41,34 @@ func processRequest(result, responseCode, headers, body):
 	
 	if (response.has("global")):
 		clearLeaderBoard($Global/Board);		
-		for entry in response["global"]:
+		for entry : Variant in response["global"]:
 			addLeaderBoardEntry($Global/Board, entry["rank"], entry["name"], entry["score"]);
 		
 	if (response.has("personal")):
 		clearLeaderBoard($Personal/Board);		
-		for entry in response["personal"]:
+		for entry : Variant in response["personal"]:
 			addLeaderBoardEntry($Personal/Board, entry["rank"], entry["name"], entry["score"]);
 
-func submitScore():
-	var body = JSON.new().stringify({ 
+func submitScore() -> void:
+	var body := JSON.new().stringify({ 
 		"level": levelName,
 		"name": username,
 		"score": levelScore, 
 		"key": "PLEASE DONT BE A GREMLIN AND CHEAT THE SYSTEM,, NAUGHTY FELLA",
 	});
-	var error = submitRequest.request("https://piratejam15.jawdan.dev/postLeaderboard/", requestHeaders, HTTPClient.METHOD_POST, body)
+	var error := submitRequest.request("https://piratejam15.jawdan.dev/postLeaderboard/", requestHeaders, HTTPClient.METHOD_POST, body)
 	if error != OK: push_error("An error occurred in the HTTP request.")
 
-func getLeaderBoardInformation():
-	var body = JSON.new().stringify({ 
+func getLeaderBoardInformation() -> void:
+	var body := JSON.new().stringify({ 
 		"level": levelName,
 		"name": username,
 		"key": "THIS ONE ISNT SO BAD TO SORTA USE,,",
 	});
-	var error = getRequest.request("https://piratejam15.jawdan.dev/getLeaderboard/", requestHeaders, HTTPClient.METHOD_POST, body)
+	var error := getRequest.request("https://piratejam15.jawdan.dev/getLeaderboard/", requestHeaders, HTTPClient.METHOD_POST, body)
 	if error != OK: push_error("An error occurred in the HTTP request.")
 	
-func addLeaderBoardEntry(board : Control, rank : int, name : String, score : int):
+func addLeaderBoardEntry(board : Control, rank : int, name : String, score : int) -> void:
 	if (board == null): return;
 	
 	var rankElement : Control = board.get_child(0);
@@ -79,13 +79,13 @@ func addLeaderBoardEntry(board : Control, rank : int, name : String, score : int
 	addLabel(nameElement, name);
 	addLabel(scoreElement, str(score));
 	
-func addLabel(element : Control, text : String):
+func addLabel(element : Control, text : String) -> void:
 	var label : Label = Label.new();
 	label.text = text;
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER;
 	element.add_child(label);	
 
-func clearLeaderBoard(board : Control):
+func clearLeaderBoard(board : Control) -> void:
 	if (board == null): return;
 	
 	var targets : Array[Control] = [ board.get_child(0), board.get_child(2), board.get_child(4) ];

@@ -9,19 +9,19 @@ class_name Wiring;
 			if (connection != null && !connection.onUpdate.is_connected(_onConnectionChanged)):
 				connection.onUpdate.connect(_onConnectionChanged);
 		queue_redraw();
-func _onConnectionChanged():
+func _onConnectionChanged() -> void:
 	queue_redraw();
 
 class InputCell:
 	var state : bool;
 	var outputPos : Array[Vector2i];
 	
-	func _init(_outputPos : Vector2i, outputCells : Dictionary):
+	func _init(_outputPos : Vector2i, outputCells : Dictionary) -> void:
 		state = false;
 		outputPos = [];
 		addOutput(_outputPos, outputCells);
 	
-	func addOutput(_outputPos : Vector2i, outputCells : Dictionary):
+	func addOutput(_outputPos : Vector2i, outputCells : Dictionary) -> void:
 		outputPos.push_back(_outputPos);
 		
 		if (outputCells.has(_outputPos)):
@@ -29,7 +29,7 @@ class InputCell:
 		else:
 			outputCells[_outputPos] = OutputCell.new();
 	
-	func setState(_state : bool, outputCells : Dictionary):
+	func setState(_state : bool, outputCells : Dictionary) -> void:
 		if (state == _state): return;
 		
 		state = _state;
@@ -40,15 +40,15 @@ class InputCell:
 		
 class OutputCell:
 	var remainingInputs : int;
-	func _init():
+	func _init() -> void:
 		remainingInputs = 1;
 
-	func getState():
+	func getState() -> bool:
 		return remainingInputs <= 0;
 		
 var inputCells : Dictionary;
 var outputCells : Dictionary;
-func _ready():
+func _ready() -> void:
 	if (Engine.is_editor_hint()): return;
 	
 	for connection : WireConnection in connections:
@@ -70,7 +70,7 @@ func getOuput(pos : Vector2i) -> bool:
 	return outputCells[pos].getState();
 
 const tileScale : float = 36.0;
-func _draw():
+func _draw() -> void:
 	if (!Engine.is_editor_hint()): return;
 	
 	for connection : WireConnection in connections:
@@ -86,6 +86,6 @@ func _draw():
 		draw_circle(end, 8, lerp(connection.color, Color.BLACK, 0.4));
 		
 		if (outputCells.has(connection.end)):
-			var default_font = ThemeDB.fallback_font;
-			var default_font_size = ThemeDB.fallback_font_size;
+			var default_font : Font = ThemeDB.fallback_font;
+			var default_font_size : int = ThemeDB.fallback_font_size;
 			draw_string(default_font, end, str(outputCells[connection.end].remainingInputs), HORIZONTAL_ALIGNMENT_CENTER, -1, default_font_size)

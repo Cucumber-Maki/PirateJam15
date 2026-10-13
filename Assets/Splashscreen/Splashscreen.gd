@@ -8,7 +8,7 @@ extends CanvasLayer
 
 var remainingSplash : float = 0.0;
 var activeSplash : int = -1;
-func _process(delta):
+func _process(delta : float) -> void:
 	if (remainingSplash <= 0.0):
 		cycleToNextSplash();
 	else:
@@ -22,10 +22,10 @@ func _process(delta):
 	else:
 		$ActiveLogo.texture = splashImages[activeSplash];
 	
-func cycleToNextSplash():
+func cycleToNextSplash() -> void:
 	activeSplash += 1;
 	remainingSplash = splashTime;
 		
-func _input(event):
+func _input(event : InputEvent) -> void:
 	if (event.is_pressed() && !event.is_echo()):
 		cycleToNextSplash();

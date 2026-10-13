@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-func _ready():
+func _ready() -> void:
 	var levelName : String = $"../".name;
 	var artefactPath : String = ArtefactConfig.getLevelArtefactPath(levelName);
 	if (!ResourceLoader.exists(artefactPath)): return;
@@ -12,8 +12,8 @@ func _ready():
 		artefactName = artefactName.replace("\n", " ");
 	$Margin/HBox/Panel/VBox/VBox/Background/ArtefactName.text = "- " + artefactName + " -";
 	
-func levelComplete():
+func levelComplete() -> void:
 	visible = true;
 
-func goBack():
+func goBack() -> void:
 	$"../".gotoLevelSelect(true);

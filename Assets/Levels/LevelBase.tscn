@@ -21,9 +21,10 @@
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.554585, 0.241758), 0.0, 0.0, 0, 0, Vector2(1, 1), 5.17277, 0.0, 0, 0]
 point_count = 3
 
-[node name="Level2" type="Node2D" unique_id=1127187215]
+[node name="Level2" type="Node2D" unique_id=1127187215 node_paths=PackedStringArray("walls")]
 z_index = 2
 script = ExtResource("1_rok26")
+walls = NodePath("Objects/Walls")
 
 [node name="Camera" type="Camera2D" parent="." unique_id=501677605]
 

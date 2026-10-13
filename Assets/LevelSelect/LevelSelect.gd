@@ -4,7 +4,7 @@ extends Control
 
 # https://www.reddit.com/r/godot/comments/k1t53k/getting_tscn_children_from_levels_folder/
 func getFilePathsByExtension(directoryPath: String, extension: String, recursive: bool = true) -> Array:
-	var dir = DirAccess.open(directoryPath);
+	var dir : DirAccess = DirAccess.open(directoryPath);
 	if !dir:
 		printerr("Warning: could not open directory: ", directoryPath)
 		return []
@@ -13,36 +13,38 @@ func getFilePathsByExtension(directoryPath: String, extension: String, recursive
 		printerr("Warning: could not list contents of: ", directoryPath)
 		return []
 
-	var filePaths = []
-	var fileName = dir.get_next()
+	var filePaths : Array = []
+	var fileName : String = dir.get_next()
 
 	while fileName != "":
 		fileName = fileName.trim_suffix(".remap");
 		if dir.current_is_dir():
 			if recursive:
-				var dirPath = dir.get_current_dir() + "/" + fileName
+				var dirPath := dir.get_current_dir() + "/" + fileName
 				filePaths += getFilePathsByExtension(dirPath, extension, recursive)
 		elif fileName.get_extension() == extension:
-			var filePath = dir.get_current_dir() + "/" + fileName;
+			var filePath := dir.get_current_dir() + "/" + fileName;
 			filePaths.push_back(filePath);
 		fileName = dir.get_next()
 
 	return filePaths
 
 var gotos : Dictionary = {};
-func _ready():
+func _ready() -> void:
 	if (levelGoto == null):
 		printerr("LevelGoto instance not specified.");
 		return;
 	
 	# Get levels.
-	var levelPaths = getFilePathsByExtension("res://Scenes/Levels", "tscn", false);
-	var levelNames = levelPaths.map(func(path : String):
-		var start = path.rfind("/") + 1;
-		var end = path.rfind(".");
+	var levelPaths := getFilePathsByExtension("res://scenes/levels", "tscn", false);
+	var levelNames : Array[String] = []
+	levelNames.assign(levelPaths.map(func(path : String) -> String:
+		var start := path.rfind("/") + 1;
+		var end := path.rfind(".");
 		return path.substr(start, end - start);
-	);
-	
+	));
+	print_debug(levelPaths)
+	print_debug(levelNames)
 	# Add level buttons.
 	for i in range(min(levelPaths.size(), levelNames.size())):
 		var instance : Control = levelGoto.instantiate();
@@ -50,7 +52,7 @@ func _ready():
 		$VBox/Grid.add_child(instance);
 		gotos[levelNames[i]] = instance;
 
-func completeLevel(levelName : String):
+func completeLevel(levelName : String) -> void:
 	if (!gotos.has(levelName)): return;
 	gotos[levelName].showArtefact();
 	

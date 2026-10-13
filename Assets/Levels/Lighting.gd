@@ -17,7 +17,7 @@ class Emitter:
 	var position : Vector2i;
 	var color : int;
 	var direction : Direction;
-	func _init(_position : Vector2i, _color : int, _direction : Direction):
+	func _init(_position : Vector2i, _color : int, _direction : Direction) -> void:
 		enabled = true;
 		position = _position;
 		color = _color;
@@ -58,7 +58,7 @@ class LightingInformation:
 	var isInput : bool;
 	var color : int;
 	var direction : Direction;
-	func _init(_direction : Direction):
+	func _init(_direction : Direction) -> void:
 		isInput = false;
 		color = 0;
 		direction = _direction;
@@ -67,7 +67,7 @@ class LightData:
 	var color : int;
 	var data : Array[LightingInformation];
 	
-	func _init():
+	func _init() -> void:
 		data = [
 			LightingInformation.new(Direction.Direction_Up),
 			LightingInformation.new(Direction.Direction_Right),
@@ -76,7 +76,7 @@ class LightData:
 		];
 		color = 0;
 		
-	func calculateTotalColor():		
+	func calculateTotalColor() -> void:
 		color = 0;
 		var shadowColor : int = 0;
 		for lightingInfo : LightingInformation in data:
@@ -88,7 +88,7 @@ class LightData:
 			color = shadowColor;
 
 var lightingData : Dictionary = {};
-func updateLighting(): 
+func updateLighting() -> void: 
 	lightingData.clear();
 	
 	# Handle Lighting.
@@ -227,7 +227,7 @@ func propagateLighting(pos : Vector2i, fromDirection : Direction) -> int:
 		
 	return color;
 
-func _ready():
+func _ready() -> void:
 	updateLighting();
 
 func addEmitter(emitter : Emitter) -> bool:
@@ -238,13 +238,13 @@ func addEmitter(emitter : Emitter) -> bool:
 	emitters.push_back(emitter);
 	return true;
 	
-func removeEmitter(emitterPos : Vector2i):
+func removeEmitter(emitterPos : Vector2i) -> void:
 	for i : int in range(len(emitters)):
 		if (emitters[i].position == emitterPos):
 			emitters.remove_at(i);
 			break;
 	
-func moveEmitter(emitterPos : Vector2i, newPos : Vector2i):
+func moveEmitter(emitterPos : Vector2i, newPos : Vector2i) -> void:
 	var emitter : Emitter = null;
 	for e : Emitter in emitters:
 		if (e.position == emitterPos):
@@ -254,25 +254,25 @@ func moveEmitter(emitterPos : Vector2i, newPos : Vector2i):
 	if (addEmitter(Emitter.new(newPos, emitter.color, emitter.direction))):
 		removeEmitter(emitterPos);
 	
-func enableEmitter(emitterPos : Vector2i):
+func enableEmitter(emitterPos : Vector2i) -> void:
 	for emitter : Emitter in emitters:
 		if (emitter.position == emitterPos):
 			emitter.enabled = true;
 			break;
 			
-func disableEmitter(emitterPos : Vector2i):
+func disableEmitter(emitterPos : Vector2i) -> void:
 	for emitter : Emitter in emitters:
 		if (emitter.position == emitterPos):
 			emitter.enabled = false;
 			break;
 	
-func clearEmitters():
+func clearEmitters() -> void:
 	emitters.clear();
 	
-func _draw():
+func _draw() -> void:
 	const lightingWidth = 8;
 	
-	for pos in lightingData:
+	for pos : Vector2i in lightingData:
 		var midPoint : Vector2 = Vector2(pos) + Vector2(0.5, 0.5);
 		var midLighting : int = 0;
 		for lightingInfo : LightingInformation in lightingData[pos].data:

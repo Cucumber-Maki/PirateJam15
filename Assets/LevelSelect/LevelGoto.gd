@@ -1,7 +1,7 @@
 extends Button
 
 var scenePath : String = "";
-func setLevel(levelName : String, _scenePath : String):
+func setLevel(levelName : String, _scenePath : String) -> void:
 	self.text = levelName;
 	scenePath = _scenePath;
 	
@@ -9,14 +9,14 @@ func setLevel(levelName : String, _scenePath : String):
 	if (ResourceLoader.exists(artefactPath)):
 		$Artefact.texture = ResourceLoader.load(artefactPath);
 	
-func onGotoLevel():
+func onGotoLevel() -> void:
 	if (scenePath == ""): return;
 	var scene : PackedScene = ResourceLoader.load(scenePath);
 	var instance : Node2D = scene.instantiate();
 	instance.name = self.text;
 	get_tree().root.add_child(instance);
 	LeaderBoard.levelName = self.text;
-	get_tree().root.get_child(1).get_child(2).get_child(1).release_focus();
+	#get_tree().root.get_child(1).get_child(2).get_child(1).release_focus();
 
-func showArtefact():
+func showArtefact() -> void:
 	$Artefact.visible = true;
