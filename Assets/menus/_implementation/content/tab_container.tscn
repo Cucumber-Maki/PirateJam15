@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://kghxyrow56oj"]
+
+[node name="Tab Container" type="TabContainer" unique_id=421265529]
+custom_minimum_size = Vector2(320, 150)
+offset_right = 640.0
+offset_bottom = 360.0

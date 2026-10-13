@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://kghxyrow56oj"]
+
+[node name="Tab" type="MarginContainer" unique_id=1427238808]
+offset_top = 180.0
+offset_bottom = 180.0
