@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://llal75i5y7ub"
-path="res://.godot/imported/GodotLogo.png-b5178318f3a0e31a2317f6c91a981748.ctex"
+uid="uid://bx3bgen4axlgi"
+path="res://.godot/imported/Walls.png-4fae1dc442fac5d667782316c6708dbf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/splashscreen/Logos/GodotLogo.png"
-dest_files=["res://.godot/imported/GodotLogo.png-b5178318f3a0e31a2317f6c91a981748.ctex"]
+source_file="res://assets/levels/tilesets/Walls.png"
+dest_files=["res://.godot/imported/Walls.png-4fae1dc442fac5d667782316c6708dbf.ctex"]
 
 [params]
 
@@ -37,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

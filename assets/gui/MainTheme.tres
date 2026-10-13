@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3 uid="uid://cuj4xxk1q18g6"]
 
-[ext_resource type="FontFile" uid="uid://dq65uq3gojaq4" path="res://assets/GUI/MakiBold.ttf" id="1_6qb1p"]
+[ext_resource type="FontFile" uid="uid://dq65uq3gojaq4" path="res://assets/gui/MakiBold.ttf" id="1_6qb1p"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1htm1"]
 content_margin_left = 4.0

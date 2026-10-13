@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b7dt1ccj8ekx0"
-path="res://.godot/imported/Floor.png-7a20a1d4f68be508d975f0445fdaa57b.ctex"
+uid="uid://llal75i5y7ub"
+path="res://.godot/imported/GodotLogo.png-a481cd3daf4dd556d5355b5e2b4a53a3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/levels/Tilesets/Floor.png"
-dest_files=["res://.godot/imported/Floor.png-7a20a1d4f68be508d975f0445fdaa57b.ctex"]
+source_file="res://assets/splashscreen/logos/GodotLogo.png"
+dest_files=["res://.godot/imported/GodotLogo.png-a481cd3daf4dd556d5355b5e2b4a53a3.ctex"]
 
 [params]
 
@@ -37,4 +37,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

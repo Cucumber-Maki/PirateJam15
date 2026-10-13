@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://b181p0bf2jg07"
-path="res://.godot/imported/youwin.wav-1ccb4a1e97292754602e979c094d6cea.sample"
+path="res://.godot/imported/youwin.wav-a76c4461b15b61f61431881b2fbc943c.sample"
 
 [deps]
 
-source_file="res://assets/audio/SFX/youwin.wav"
-dest_files=["res://.godot/imported/youwin.wav-1ccb4a1e97292754602e979c094d6cea.sample"]
+source_file="res://assets/audio/sfx/youwin.wav"
+dest_files=["res://.godot/imported/youwin.wav-a76c4461b15b61f61431881b2fbc943c.sample"]
 
 [params]
 

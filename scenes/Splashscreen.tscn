@@ -2,8 +2,8 @@
 
 [ext_resource type="Material" uid="uid://b31ki10iifrsp" path="res://assets/splashscreen/Splashscreen.tres" id="1_1l5ux"]
 [ext_resource type="Script" uid="uid://im8jekx0oduy" path="res://assets/splashscreen/Splashscreen.gd" id="1_flgnc"]
-[ext_resource type="Texture2D" uid="uid://llal75i5y7ub" path="res://assets/splashscreen/Logos/GodotLogo.png" id="1_ko0ud"]
-[ext_resource type="Texture2D" uid="uid://cj4ojm8b1pwlx" path="res://assets/splashscreen/Logos/CucumberLogo.png" id="2_cfh2q"]
+[ext_resource type="Texture2D" uid="uid://llal75i5y7ub" path="res://assets/splashscreen/logos/GodotLogo.png" id="1_ko0ud"]
+[ext_resource type="Texture2D" uid="uid://cj4ojm8b1pwlx" path="res://assets/splashscreen/logos/CucumberLogo.png" id="2_cfh2q"]
 
 [node name="Splashscreen" type="CanvasLayer" unique_id=247274378]
 script = ExtResource("1_flgnc")
