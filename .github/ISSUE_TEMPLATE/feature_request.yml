@@ -1,0 +1,28 @@
+name: Feature request
+description: Suggest an idea for this project
+type: Feature
+body:
+  - type: input
+    attributes:
+      label: Short description
+      description: A clear and concise description of what the requested feature is.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: What issues does this solve? (if any)
+      description: A clear and concise description of what you expected to happen.
+  - type: textarea
+    attributes:
+      label: Expected behaviors and features
+      description: An explicit list of what you expect from the feature
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Link to a pre-existing implementation or example (optional)
+      description: A link to code where an example exists, or an implementation was made or found during a project, such as a game jam, and could be potentially used again.
+  - type: textarea
+    attributes:
+      label: Any additional information?
+      description: Additional information box!

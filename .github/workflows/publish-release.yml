@@ -1,0 +1,37 @@
+name: Publish Release
+run-name: Publish Release ${{github.ref_name}} by @${{github.actor}}
+on: workflow_dispatch
+
+env:
+  RELEASE_TARGET: "${{github.ref_name}}"
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    name: Upload ${{matrix.name}} Build To itch.io
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        name: [Windows, Linux, Web]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download ${{matrix.name}} Build
+        id: download
+        run: |
+          zip_file="${{vars.EXPORT_NAME}}_${{vars.ITCH_CHANNEL}}_${{env.RELEASE_TARGET}}_${{matrix.name}}.zip"
+          gh release download ${{env.RELEASE_TARGET}} --pattern "${zip_file}" --clobber
+          echo "zip_file=$zip_file" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish ${{matrix.name}} Build To itch.io
+        uses: yeslayla/butler-publish-itchio-action@483157ebeeeb440e2fdc9f162f3fcfc27028c0ef # v1.2.0
+        env:
+          BUTLER_CREDENTIALS: ${{secrets.ITCH_BUTLER_API_KEY}}
+          CHANNEL: ${{vars.ITCH_CHANNEL}}-${{matrix.name}}
+          ITCH_GAME: ${{vars.ITCH_GAME}}
+          ITCH_USER: ${{vars.ITCH_OWNER}}
+          PACKAGE: ${{steps.download.outputs.zip_file}}
+          VERSION: ${{env.RELEASE_TARGET}}

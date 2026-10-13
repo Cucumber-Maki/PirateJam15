@@ -1,0 +1,33 @@
+name: Bug report
+description: Create a report to help us improve
+type: Bug
+body:
+  - type: input
+    attributes:
+      label: Bug description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. 
+        2.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: What do you expect to be happening instead?
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Link to a resolution or workaround (optional)
+      description: A link to code where a resolution or workaround was made when encountered during a project, such as a game jam.
+  - type: textarea
+    attributes:
+      label: Any additional information?
+      description: Additional information box!
