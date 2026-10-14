@@ -9,7 +9,7 @@
 [ext_resource type="TileSet" uid="uid://bwvt7r64dbdjs" path="res://assets/levels/tilesets/BackgroundEntities.tres" id="4_l05dv"]
 [ext_resource type="Script" uid="uid://c1iwae8k2dxr3" path="res://assets/levels/Lighting.gd" id="5_d8cb2"]
 [ext_resource type="Material" uid="uid://b86ugiwyyg5jt" path="res://assets/background/Background.tres" id="5_vi568"]
-[ext_resource type="Script" uid="uid://cv101c54gbyba" path="res://assets/levels/Wiring.gd" id="7_qv88h"]
+[ext_resource type="Script" uid="uid://cv101c54gbyba" path="res://assets/levels/wiring/Wiring.gd" id="7_qv88h"]
 [ext_resource type="Theme" uid="uid://cuj4xxk1q18g6" path="res://assets/gui/MainTheme.tres" id="10_ychug"]
 [ext_resource type="Script" uid="uid://bh7dfkl7xqt7u" path="res://assets/levels/LevelComplete.gd" id="12_olgnu"]
 [ext_resource type="Material" uid="uid://crxfalfjr0jag" path="res://assets/gui/MenuBlurLight.tres" id="13_34gyf"]
