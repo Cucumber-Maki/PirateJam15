@@ -113,7 +113,7 @@ func registerLighting() -> void:
 				EntityTileType.EntityTileType_Light:
 					var lightCoord : Vector2i = $Entities.get_cell_atlas_coords(0, pos);
 					
-					var direction : Lighting.Direction = lightCoord.y;
+					var direction : Lighting.Direction = lightCoord.y as Lighting.Direction;
 					var color : int = lightCoord.x - 1;
 					
 					$Lighting.addEmitter(Emitter.new(pos, color, direction));

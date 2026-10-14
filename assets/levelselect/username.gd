@@ -1,7 +1,7 @@
 extends LineEdit
 
 const allowedCharacters : String = "ABCDEFGHIJKLMNOPQRSTUVWXYabcdefghijklmnopqrstuvwxyz_1234567890";
-func _onTextChanged(new_text : String) -> void:
+func _onTextChanged(_new_text : String) -> void:
 	var cursorPos := caret_column;
 	
 	for i in range(len(text)):

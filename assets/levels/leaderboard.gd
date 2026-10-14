@@ -28,9 +28,9 @@ func visibilityChanged() -> void:
 	else:
 		submitScore();
 	
-func processRequest(result : int, responseCode : int, headers : PackedStringArray, body : PackedByteArray) -> void:
+func processRequest(_p_result : int, _p_responseCode : int, _p_headers : PackedStringArray, _p_body : PackedByteArray) -> void:
 	var json : JSON = JSON.new()
-	json.parse(body.get_string_from_utf8())
+	json.parse(_p_body.get_string_from_utf8())
 	var response : Variant = json.get_data();
 	print(response);
 	if (response == null): return;
@@ -50,7 +50,7 @@ func processRequest(result : int, responseCode : int, headers : PackedStringArra
 			addLeaderBoardEntry($Personal/Board, entry["rank"], entry["name"], entry["score"]);
 
 func submitScore() -> void:
-	var body := JSON.new().stringify({ 
+	var body := JSON.stringify({ 
 		"level": levelName,
 		"name": username,
 		"score": levelScore, 
@@ -60,7 +60,7 @@ func submitScore() -> void:
 	if error != OK: push_error("An error occurred in the HTTP request.")
 
 func getLeaderBoardInformation() -> void:
-	var body := JSON.new().stringify({ 
+	var body := JSON.stringify({ 
 		"level": levelName,
 		"name": username,
 		"key": "THIS ONE ISNT SO BAD TO SORTA USE,,",
@@ -68,16 +68,16 @@ func getLeaderBoardInformation() -> void:
 	var error := getRequest.request("https://piratejam15.jawdan.dev/getLeaderboard/", requestHeaders, HTTPClient.METHOD_POST, body)
 	if error != OK: push_error("An error occurred in the HTTP request.")
 	
-func addLeaderBoardEntry(board : Control, rank : int, name : String, score : int) -> void:
-	if (board == null): return;
+func addLeaderBoardEntry(p_board : Control, p_rank : int, p_name : String, p_score : int) -> void:
+	if (p_board == null): return;
 	
-	var rankElement : Control = board.get_child(0);
-	var nameElement : Control = board.get_child(2);
-	var scoreElement : Control = board.get_child(4);
+	var rankElement : Control = p_board.get_child(0);
+	var nameElement : Control = p_board.get_child(2);
+	var scoreElement : Control = p_board.get_child(4);
 	
-	addLabel(rankElement, str(rank));
-	addLabel(nameElement, name);
-	addLabel(scoreElement, str(score));
+	addLabel(rankElement, str(p_rank));
+	addLabel(nameElement, p_name);
+	addLabel(scoreElement, str(p_score));
 	
 func addLabel(element : Control, text : String) -> void:
 	var label : Label = Label.new();

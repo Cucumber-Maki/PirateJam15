@@ -12,7 +12,7 @@ enum Direction {
 	Direction_Left,
 };
 func flipDirection(direction : Direction) -> Direction:
-	return (direction + 2) % 4;
+	return ((direction + 2) % 4) as Direction;
 		
 var emitters : Array[Emitter] = [];
 
@@ -149,7 +149,7 @@ func updateLighting() -> void:
 	
 	queue_redraw();
 
-func propagateLighting(pos : Vector2i, fromDirection : Direction) -> int:
+func propagateLighting(pos : Vector2i, _fromDirection : Direction) -> int:
 	# Get lighting point data.
 	if (!lightingData.has(pos)): return 0;
 	var lightingDataPos : LightData = lightingData[pos];
@@ -232,7 +232,7 @@ func _draw() -> void:
 	
 	for pos : Vector2i in lightingData:
 		var midPoint : Vector2 = Vector2(pos) + Vector2(0.5, 0.5);
-		var midLighting : int = 0;
+		var _midLighting : int = 0;
 		for lightingInfo : LightingInformation in lightingData[pos].data:
 			if (!lightingInfo.color): continue;
 			
