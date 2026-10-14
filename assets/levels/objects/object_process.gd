@@ -98,23 +98,6 @@ func checkIfEntity(pos : Vector2i) -> bool:
 	if (!entityRect.has_point(pos)): return false;
 	return $Entities.get_cell_source_id(0, pos) != -1;
 	
-class LightButton:
-	var position : Vector2i;
-	var color : int;
-	var lit : bool;
-	func _init(_position : Vector2i, _color : int) -> void:
-		position = _position;
-		color = _color;
-		lit = false;
-		
-class Door:
-	var position : Vector2i;
-	var color : int;
-	var open : bool;
-	func _init(_position : Vector2i, _color : int) -> void:
-		position = _position;
-		color = _color;
-		open = false;
 
 var endPos : Vector2i = Vector2i(9999, 9999);
 var lightButtons : Array[LightButton];
@@ -133,7 +116,7 @@ func registerLighting() -> void:
 					var direction : Lighting.Direction = lightCoord.y;
 					var color : int = lightCoord.x - 1;
 					
-					$Lighting.addEmitter(Lighting.Emitter.new(pos, color, direction));
+					$Lighting.addEmitter(Emitter.new(pos, color, direction));
 					
 				EntityTileType.EntityTileType_DoorClose:
 					var doorCoord : Vector2i = $Entities.get_cell_atlas_coords(0, pos);

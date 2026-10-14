@@ -1,6 +1,8 @@
 extends Node2D
 class_name Lighting;
 
+################################################################################
+
 const tileScale : float = 36.0;
 
 enum Direction {
@@ -11,17 +13,6 @@ enum Direction {
 };
 func flipDirection(direction : Direction) -> Direction:
 	return (direction + 2) % 4;
-
-class Emitter:
-	var enabled : bool;
-	var position : Vector2i;
-	var color : int;
-	var direction : Direction;
-	func _init(_position : Vector2i, _color : int, _direction : Direction) -> void:
-		enabled = true;
-		position = _position;
-		color = _color;
-		direction = _direction;
 		
 var emitters : Array[Emitter] = [];
 
@@ -53,39 +44,6 @@ func getLightingColor(lighting : int) -> Color:
 		color.g *= 0.5;
 		color.b *= 0.5;
 	return color;
-
-class LightingInformation:
-	var isInput : bool;
-	var color : int;
-	var direction : Direction;
-	func _init(_direction : Direction) -> void:
-		isInput = false;
-		color = 0;
-		direction = _direction;
-
-class LightData:
-	var color : int;
-	var data : Array[LightingInformation];
-	
-	func _init() -> void:
-		data = [
-			LightingInformation.new(Direction.Direction_Up),
-			LightingInformation.new(Direction.Direction_Right),
-			LightingInformation.new(Direction.Direction_Down),
-			LightingInformation.new(Direction.Direction_Left),
-		];
-		color = 0;
-		
-	func calculateTotalColor() -> void:
-		color = 0;
-		var shadowColor : int = 0;
-		for lightingInfo : LightingInformation in data:
-			if (lightingInfo.isInput): 
-				if (lightingInfo.color & LightingValueShadowMask): shadowColor |= lightingInfo.color;
-				else: color |= lightingInfo.color & LightingValueColorMask;;
-				
-		if (color == 0 && shadowColor != 0):
-			color = shadowColor;
 
 var lightingData : Dictionary = {};
 func updateLighting() -> void: 
