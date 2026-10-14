@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://dq65uq3gojaq4"
-path="res://.godot/imported/MakiBold.ttf-03789a6e9cdd45230cbee7ff6c631a3b.fontdata"
+path="res://.godot/imported/maki_bold.ttf-c90b9671c29a06bcd9b6a1e6ee501dc5.fontdata"
 
 [deps]
 
-source_file="res://assets/gui/MakiBold.ttf"
-dest_files=["res://.godot/imported/MakiBold.ttf-03789a6e9cdd45230cbee7ff6c631a3b.fontdata"]
+source_file="res://assets/gui/maki_bold.ttf"
+dest_files=["res://.godot/imported/maki_bold.ttf-c90b9671c29a06bcd9b6a1e6ee501dc5.fontdata"]
 
 [params]
 
