@@ -255,6 +255,7 @@ func _draw() -> void:
 				getLightingColor(lightingInfo.color), lightingWidth, false
 			);
 			
+		@warning_ignore("integer_division")
 		draw_line(
 			(midPoint * tileScale) + Vector2(0, lightingWidth / 2), 
 			(midPoint * tileScale) + Vector2(0, -lightingWidth / 2), 

@@ -222,6 +222,7 @@ func processInput() -> void:
 		$"../".gotoLevelSelect();
 		return;
 	
+	@warning_ignore("narrowing_conversion")
 	var movement : Vector2i = Vector2i(
 		Input.get_axis("player_movement_left", "player_movement_right"),
 		Input.get_axis("player_movement_up", "player_movement_down"),
