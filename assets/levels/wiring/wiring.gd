@@ -1,0 +1,57 @@
+@tool
+extends Node2D
+class_name Wiring;
+
+@export var connections : Array[WireConnection]:
+	set(val):
+		connections = val;
+		for connection : WireConnection in connections:
+			if (connection != null && !connection.onUpdate.is_connected(_onConnectionChanged)):
+				connection.onUpdate.connect(_onConnectionChanged);
+		queue_redraw();
+func _onConnectionChanged() -> void:
+	queue_redraw();
+
+var inputCells : Dictionary;
+var outputCells : Dictionary;
+func _ready() -> void:
+	if (Engine.is_editor_hint()): return;
+	
+	for connection : WireConnection in connections:
+		if (connection == null): continue;
+		
+		if (inputCells.has(connection.start)):
+			inputCells[connection.start].addOutput(connection.end, outputCells);
+		else:
+			inputCells[connection.start] = InputCell.new(connection.end, outputCells);
+	
+func setInput(pos : Vector2i, state : bool) -> void:
+	if (!inputCells.has(pos)): return;
+	inputCells[pos].setState(state, outputCells);
+	queue_redraw();
+	get_parent().stateAddWiring(pos, state);
+
+func getOuput(pos : Vector2i) -> bool:
+	if (!outputCells.has(pos)): return false;
+	return outputCells[pos].getState();
+
+const tileScale : float = 36.0;
+func _draw() -> void:
+	if (!Engine.is_editor_hint()): return;
+	
+	for connection : WireConnection in connections:
+		if (connection == null): continue;
+		var centerOffset : Vector2 = Vector2.ONE * 0.5;
+		var start : Vector2 = (Vector2(connection.start) + centerOffset) * tileScale;
+		var end : Vector2 = (Vector2(connection.end) + centerOffset) * tileScale;
+		
+		draw_line(start, end, connection.color, 3);
+		draw_circle(start, 9, Color(1.0, 0.0, 0.0, 0.4));
+		draw_circle(start, 8, lerp(connection.color, Color.WHITE, 0.4));
+		draw_circle(end, 9, Color(0.0, 1.0, 0.0, 0.4));
+		draw_circle(end, 8, lerp(connection.color, Color.BLACK, 0.4));
+		
+		if (outputCells.has(connection.end)):
+			var default_font : Font = ThemeDB.fallback_font;
+			var default_font_size : int = ThemeDB.fallback_font_size;
+			draw_string(default_font, end, str(outputCells[connection.end].remainingInputs), HORIZONTAL_ALIGNMENT_CENTER, -1, default_font_size)

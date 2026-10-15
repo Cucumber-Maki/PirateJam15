@@ -1,0 +1,95 @@
+extends TabContainer
+class_name LeaderBoard;
+
+static var username : String = "";
+static var levelName : String = "1";
+static var levelScore : int = 1;
+
+const requestHeaders : Array[String] = [ 
+	"Content-Type: application/json", 
+	"Access-Control-Allow-Origin: *"
+];
+var getRequest : HTTPRequest;
+var submitRequest : HTTPRequest;
+func _ready() -> void:
+	getRequest = HTTPRequest.new()
+	add_child(getRequest)
+	getRequest.request_completed.connect(self.processRequest)
+	submitRequest = HTTPRequest.new()
+	add_child(submitRequest)
+	submitRequest.request_completed.connect(self.processRequest)
+
+func visibilityChanged() -> void:
+	if (!visible): return;
+	
+	if (username == ""): 
+		remove_child($Personal);
+		getLeaderBoardInformation();
+	else:
+		submitScore();
+	
+func processRequest(_p_result : int, _p_responseCode : int, _p_headers : PackedStringArray, _p_body : PackedByteArray) -> void:
+	var json : JSON = JSON.new()
+	json.parse(_p_body.get_string_from_utf8())
+	var response : Variant = json.get_data();
+	print(response);
+	if (response == null): return;
+	
+	if (response.has("success")):
+		if (response["success"]):
+			getLeaderBoardInformation();
+	
+	if (response.has("global")):
+		clearLeaderBoard($Global/Board);		
+		for entry : Variant in response["global"]:
+			addLeaderBoardEntry($Global/Board, entry["rank"], entry["name"], entry["score"]);
+		
+	if (response.has("personal")):
+		clearLeaderBoard($Personal/Board);		
+		for entry : Variant in response["personal"]:
+			addLeaderBoardEntry($Personal/Board, entry["rank"], entry["name"], entry["score"]);
+
+func submitScore() -> void:
+	var body := JSON.stringify({ 
+		"level": levelName,
+		"name": username,
+		"score": levelScore, 
+		"key": "PLEASE DONT BE A GREMLIN AND CHEAT THE SYSTEM,, NAUGHTY FELLA",
+	});
+	var error := submitRequest.request("https://piratejam15.jawdan.dev/postLeaderboard/", requestHeaders, HTTPClient.METHOD_POST, body)
+	if error != OK: push_error("An error occurred in the HTTP request.")
+
+func getLeaderBoardInformation() -> void:
+	var body := JSON.stringify({ 
+		"level": levelName,
+		"name": username,
+		"key": "THIS ONE ISNT SO BAD TO SORTA USE,,",
+	});
+	var error := getRequest.request("https://piratejam15.jawdan.dev/getLeaderboard/", requestHeaders, HTTPClient.METHOD_POST, body)
+	if error != OK: push_error("An error occurred in the HTTP request.")
+	
+func addLeaderBoardEntry(p_board : Control, p_rank : int, p_name : String, p_score : int) -> void:
+	if (p_board == null): return;
+	
+	var rankElement : Control = p_board.get_child(0);
+	var nameElement : Control = p_board.get_child(2);
+	var scoreElement : Control = p_board.get_child(4);
+	
+	addLabel(rankElement, str(p_rank));
+	addLabel(nameElement, p_name);
+	addLabel(scoreElement, str(p_score));
+	
+func addLabel(element : Control, text : String) -> void:
+	var label : Label = Label.new();
+	label.text = text;
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER;
+	element.add_child(label);	
+
+func clearLeaderBoard(board : Control) -> void:
+	if (board == null): return;
+	
+	var targets : Array[Control] = [ board.get_child(0), board.get_child(2), board.get_child(4) ];
+	for target : Control in targets:
+		if (target == null): continue;
+		while (target.get_child_count() > 2):
+			target.remove_child(target.get_children().back());

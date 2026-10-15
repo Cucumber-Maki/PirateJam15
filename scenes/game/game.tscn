@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cea0kc0y5xkmo"]
+
+[ext_resource type="PackedScene" uid="uid://gqj1i4gumrvl" path="res://assets/menus/menus/game_menu/game_menu.tscn" id="1_sul5r"]
+[ext_resource type="PackedScene" uid="uid://bi8nlpd0um1b8" path="res://assets/_org/jam/auto_restart/auto_restart.tscn" id="2_7h61r"]
+
+[node name="Game" type="Node3D" unique_id=352778721]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1348649551]
+
+[node name="Game Menu" parent="CanvasLayer" unique_id=1130473495 instance=ExtResource("1_sul5r")]
+
+[node name="Auto Restart" parent="CanvasLayer" unique_id=2112582404 instance=ExtResource("2_7h61r")]

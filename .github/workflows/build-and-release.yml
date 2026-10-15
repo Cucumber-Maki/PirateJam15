@@ -1,0 +1,161 @@
+name: Build and Release
+run-name: Build ${{inputs.significance}} release from ${{github.ref_name}} by @${{github.actor}}
+on:
+  workflow_dispatch:
+    inputs:
+      significance:
+        type: choice
+        description: Release significance
+        required: true
+        options:
+          - major
+          - minor
+          - patch
+        default: patch
+      publish:
+        type: boolean
+        description: Publish builds to external platforms?
+        required: true
+        default: true
+
+permissions: write-all
+
+env:
+  RELEASE_BRANCH: "${{github.ref_name}}"
+  RELEASE_TYPE: "${{inputs.significance}}"
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bump-version:
+    name: Bump Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Increment Version
+        uses: reecetech/version-increment@2024.10.1
+        id: version
+        with:
+          scheme: semver
+          increment: ${{env.RELEASE_TYPE}}
+          release_branch: ${{env.RELEASE_BRANCH}}
+          use_api: true
+    outputs:
+      version: ${{steps.version.outputs.version}}
+
+  release-setup:
+    name: Setup ${{needs.bump-version.outputs.version}} Release
+    needs: [bump-version]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Tag Head with ${{needs.bump-version.outputs.version}}
+        run: |
+          git tag ${{needs.bump-version.outputs.version}} HEAD
+          git push origin ${{needs.bump-version.outputs.version}}
+      - name: Create Draft ${{needs.bump-version.outputs.version}} Release
+        run: |
+          gh release create ${{needs.bump-version.outputs.version}} \
+            --draft \
+            --verify-tag \
+            --notes $'Game available at:\nhttps://${{vars.ITCH_OWNER}}.itch.io/${{vars.ITCH_GAME}}\n' \
+            --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      tag: ${{needs.bump-version.outputs.version}}
+
+  build:
+    name: ${{matrix.name}} Build
+    needs: [release-setup]
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:${{vars.GODOT_VERSION}}
+    strategy:
+      matrix:
+        name: [Windows, Linux, Web]
+        include:
+          - export_extension: exe
+            export_name: "${{vars.EXPORT_NAME}}"
+            name: Windows
+          - export_extension: x86_64
+            export_name: "${{vars.EXPORT_NAME}}"
+            name: Linux
+          - export_extension: html
+            export_name: index
+            name: Web
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - uses: sersoft-gmbh/setup-gh-cli-action@v2
+      - run: git config --global --add safe.directory $(pwd)
+      - name: Setup
+        run: |
+          mkdir -v -p ~/.local/share/godot/export_templates/
+          mkdir -v -p ~/.config/
+          mv /root/.config/godot ~/.config/godot
+          mv /root/.local/share/godot/export_templates/${{vars.GODOT_VERSION}}.stable ~/.local/share/godot/export_templates/${{vars.GODOT_VERSION}}.stable
+      - name: Build ${{matrix.name}} Version
+        id: build
+        run: |
+          mkdir -v -p build/${{matrix.name}}
+          EXPORT_DIR="$(readlink -f build)"
+          godot --headless --verbose --export-release "${{matrix.name}}" "$EXPORT_DIR/${{matrix.name}}/${{matrix.export_name}}.${{matrix.export_extension}}"
+          cd build/${{matrix.name}}/
+          zip_file="${{vars.EXPORT_NAME}}_${{vars.ITCH_CHANNEL}}_${{needs.release-setup.outputs.tag}}_${{matrix.name}}.zip"
+          zip -r "../${zip_file}" *
+          echo "zip_file=$zip_file" >> $GITHUB_OUTPUT
+      - name: Upload ${{matrix.name}} Build
+        run: |
+          gh release upload ${{needs.release-setup.outputs.tag}} --clobber "build/${{steps.build.outputs.zip_file}}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release:
+    name: Finalize ${{needs.release-setup.outputs.tag}} Release
+    needs: [release-setup,build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Release
+        run: |
+          gh release edit ${{needs.release-setup.outputs.tag}} --draft=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-cleanup:
+    name: Release Cleanup
+    needs: [release-setup,release]
+    if: failure() || cancelled()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Release Cleanup
+        if: ${{needs.release-setup.result == 'success'}}
+        run: |
+          gh release delete ${{needs.release-setup.outputs.tag}} --yes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag Cleanup
+        run: |
+          git push origin --delete ${{needs.release-setup.outputs.tag}}
+
+  publish:
+    needs: [release-setup, release]
+    name: Publish ${{needs.release-setup.outputs.tag}} Release
+    if: ${{inputs.publish}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start Publish Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Publish Release
+          ref: ${{needs.release-setup.outputs.tag}}
+      - name: Log Published Game URL
+        run: |
+          echo Game available at:
+          echo https://${{vars.ITCH_OWNER}}.itch.io/${{vars.ITCH_GAME}}

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bmlo40qnumux"]
+
+[ext_resource type="PackedScene" uid="uid://hj41prwb73mi" path="res://assets/menus/menus/main_menu/main_menu.tscn" id="1_fsom3"]
+
+[node name="Main Menu" type="Node3D" unique_id=138251882]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1830341853]
+
+[node name="Main Menu" parent="CanvasLayer" unique_id=1318939953 instance=ExtResource("1_fsom3")]

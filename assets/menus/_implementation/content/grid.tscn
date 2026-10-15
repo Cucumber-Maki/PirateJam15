@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://csmb0ffjr1tbu"]
+
+[node name="Grid" type="GridContainer" unique_id=975206214]
+size_flags_horizontal = 4
+columns = 2

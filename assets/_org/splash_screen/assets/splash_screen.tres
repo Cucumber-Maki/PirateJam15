@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dp8u3xqrofxnr"]
+
+[ext_resource type="Shader" uid="uid://jd1arj8rkw84" path="res://assets/_org/splash_screen/assets/splash_screen.gdshader" id="1_ydeye"]
+
+[resource]
+shader = ExtResource("1_ydeye")

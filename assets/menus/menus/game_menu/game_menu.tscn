@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://gqj1i4gumrvl"]
+
+[ext_resource type="Script" uid="uid://dbg0xnoa7srpe" path="res://assets/menus/menus/game_menu/game_menu.gd" id="1_kqxsg"]
+[ext_resource type="Theme" uid="uid://8jm73pmaw63g" path="res://assets/menus/_implementation/theme/menu_theme.tres" id="1_r8pe8"]
+[ext_resource type="PackedScene" uid="uid://0ddso0nd75tx" path="res://assets/menus/submenus/pause_menu/pause_menu.tscn" id="2_r8pe8"]
+[ext_resource type="PackedScene" uid="uid://250hs7cm2ps7" path="res://assets/menus/submenus/settings_menu/settings_menu.tscn" id="3_o47if"]
+[ext_resource type="PackedScene" uid="uid://b8aqd1wapbx5e" path="res://assets/menus/submenus/debug_menu/debug_menu.tscn" id="5_o47if"]
+
+[node name="Game Menu" type="Control" unique_id=1447892564]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_r8pe8")
+script = ExtResource("1_kqxsg")
+
+[node name="Pause Menu" parent="." unique_id=1064675619 instance=ExtResource("2_r8pe8")]
+visible = false
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+theme = ExtResource("1_r8pe8")
+
+[node name="Settings Menu" parent="." unique_id=1117993791 instance=ExtResource("3_o47if")]
+visible = false
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+theme = ExtResource("1_r8pe8")
+
+[node name="Debug Menu" parent="." unique_id=399382676 instance=ExtResource("5_o47if")]
+visible = false
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 1
+theme = ExtResource("1_r8pe8")
