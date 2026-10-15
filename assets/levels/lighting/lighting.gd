@@ -25,6 +25,7 @@ const LIGHTING_VALUE_COLOR_MASK : int = LightingValue.RED | LightingValue.GREEN 
 const LIGHTING_VALUE_SHADOW_MASK : int = LightingValue.SHADOW;
 
 var emitters : Array[Emitter] = [];
+var lighting_data : Dictionary = {};
 
 var object_manager : ObjectProcess = get_parent();
 
@@ -50,7 +51,6 @@ func get_lighting_color(p_lighting : int) -> Color:
 		color.b *= 0.5;
 	return color;
 
-var lighting_data : Dictionary = {};
 func update_lighting() -> void: 
 	lighting_data.clear();
 	

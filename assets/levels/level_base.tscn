@@ -28,8 +28,9 @@ walls = NodePath("Objects/Walls")
 
 [node name="Camera" type="Camera2D" parent="." unique_id=501677605]
 
-[node name="Objects" type="Node2D" parent="." unique_id=1982462909]
+[node name="Objects" type="Node2D" parent="." unique_id=1982462909 node_paths=PackedStringArray("lighting")]
 script = ExtResource("2_na5lr")
+lighting = NodePath("Lighting")
 animationLerp = SubResource("Curve_214x6")
 metadata/_edit_lock_ = true
 

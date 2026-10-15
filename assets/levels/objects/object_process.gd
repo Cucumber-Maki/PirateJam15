@@ -1,6 +1,10 @@
 extends Node2D;
 class_name ObjectProcess;
 
+################################################################################
+
+@export var lighting : Lighting;
+
 enum EntityTileType {
 	EntityTileType_None,
 	EntityTileType_Player,
@@ -13,6 +17,9 @@ enum EntityTileType {
 };
 
 var levelComplete : bool = false;
+
+################################################################################
+
 func onEntityMove(entityType : EntityTileType, from : Vector2i, to : Vector2i) -> void:
 	match (entityType):
 		EntityTileType.EntityTileType_Player:
@@ -291,6 +298,7 @@ func processInput() -> void:
 	animationProgress = 0;
 	animationMoveTarget = movement * $Entities.tile_set.tile_size;
 
+@export_category("Animation")
 @export var animationTime : float = 0.2;
 @export var animationLerp : Curve;
 var animationProcessing : bool = false;
