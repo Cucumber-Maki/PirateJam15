@@ -3,7 +3,8 @@ class_name Lighting;
 
 ################################################################################
 
-const tileScale : float = 36.0;
+const TILE_SCALE : float = 36.0;
+const LIGHTING_WIDTH = 8;
 
 enum Direction {
 	Direction_Up,
@@ -11,19 +12,8 @@ enum Direction {
 	Direction_Down,
 	Direction_Left,
 };
-func flipDirection(direction : Direction) -> Direction:
-	return ((direction + 2) % 4) as Direction;
-		
-var emitters : Array[Emitter] = [];
-
-func checkIfSolid(pos : Vector2i) -> bool:
-	if (get_parent().checkIfWall(pos)): return true;
-	var entityType : ObjectProcess.EntityTileType = get_parent().getEntityTileType(pos);
-	return get_parent().isEntityTypeSolid(entityType);
-func checkIfShadowable(pos : Vector2i) -> bool:
-	if (get_parent().checkIfWall(pos)): return false;
-	var entityType : ObjectProcess.EntityTileType = get_parent().getEntityTileType(pos);
-	return get_parent().isEntityTypeShadowable(entityType);
+func flip_direction(p_direction : Direction) -> Direction:
+	return ((p_direction + 2) % 4) as Direction;
 	
 enum LightingValue {
 	Red = 1 << 0,
@@ -31,34 +21,49 @@ enum LightingValue {
 	Blue = 1 << 2,
 	Shadow = 1 << 3,
 };
-const LightingValueColorMask : int = LightingValue.Red | LightingValue.Green | LightingValue.Blue;
-const LightingValueShadowMask : int = LightingValue.Shadow;
+const LIGHTING_VALUE_COLOR_MASK : int = LightingValue.Red | LightingValue.Green | LightingValue.Blue;
+const LIGHTING_VALUE_SHADOW_MASK : int = LightingValue.Shadow;
+
+var emitters : Array[Emitter] = [];
+
+var object_manager : ObjectProcess = get_parent();
+
+################################################################################
+
+func check_if_solid(p_pos : Vector2i) -> bool:
+	if (get_parent().checkIfWall(p_pos)): return true;
+	var entity_type : ObjectProcess.EntityTileType = get_parent().getEntityTileType(p_pos);
+	return get_parent().isEntityTypeSolid(entity_type);
+func check_if_shadowable(p_pos : Vector2i) -> bool:
+	if (get_parent().checkIfWall(p_pos)): return false;
+	var entity_type : ObjectProcess.EntityTileType = get_parent().getEntityTileType(p_pos);
+	return get_parent().isEntityTypeShadowable(entity_type);
 		
-func getLightingColor(lighting : int) -> Color:
+func get_lighting_color(p_lighting : int) -> Color:
 	var color : Color = Color.BLACK;
-	if (lighting & LightingValue.Red): color.r = 1.0;
-	if (lighting & LightingValue.Green): color.g = 1.0;
-	if (lighting & LightingValue.Blue): color.b = 1.0;
-	if (lighting & LightingValue.Shadow):
+	if (p_lighting & LightingValue.Red): color.r = 1.0;
+	if (p_lighting & LightingValue.Green): color.g = 1.0;
+	if (p_lighting & LightingValue.Blue): color.b = 1.0;
+	if (p_lighting & LightingValue.Shadow):
 		color.r *= 0.5;
 		color.g *= 0.5;
 		color.b *= 0.5;
 	return color;
 
-var lightingData : Dictionary = {};
-func updateLighting() -> void: 
-	lightingData.clear();
+var lighting_data : Dictionary = {};
+func update_lighting() -> void: 
+	lighting_data.clear();
 	
 	# Handle Lighting.
-	var endPoints : Dictionary = {};
+	var end_points : Dictionary = {};
 	for emitter in emitters:
 		if (!emitter.enabled): continue;
 		var pos : Vector2i = emitter.position;
 		
 		var color : int = emitter.color;
-		var maxLength : int = 100;
-		while (maxLength > 0):
-			maxLength -= 1;
+		var max_length : int = 100;
+		while (max_length > 0):
+			max_length -= 1;
 			
 			match (emitter.direction):
 				Direction.Direction_Up: pos.y -= 1;
@@ -66,11 +71,11 @@ func updateLighting() -> void:
 				Direction.Direction_Down: pos.y += 1;
 				Direction.Direction_Left: pos.x -= 1;
 			
-			if (checkIfSolid(pos)):
-				if (checkIfShadowable(pos)):
+			if (check_if_solid(pos)):
+				if (check_if_shadowable(pos)):
 					var arr : Array[Dictionary] = [];
-					if (endPoints.has(pos)): arr = endPoints[pos];
-					else: endPoints[pos] = arr;
+					if (end_points.has(pos)): arr = end_points[pos];
+					else: end_points[pos] = arr;
 					
 					arr.push_back({
 						"direction": emitter.direction,
@@ -78,41 +83,41 @@ func updateLighting() -> void:
 					});
 				break;
 			
-			var lightingDataPos : LightData = LightData.new() if !lightingData.has(pos) else lightingData[pos];
+			var lighting_data_pos : LightData = LightData.new() if !lighting_data.has(pos) else lighting_data[pos];
 			
 		
-			lightingDataPos.data[emitter.direction].color |= color;
-			lightingDataPos.data[flipDirection(emitter.direction)].color |= color;
-			lightingDataPos.data[flipDirection(emitter.direction)].isInput = true;
+			lighting_data_pos.data[emitter.direction].color |= color;
+			lighting_data_pos.data[flip_direction(emitter.direction)].color |= color;
+			lighting_data_pos.data[flip_direction(emitter.direction)].is_input = true;
 			
-			if (lightingData.has(pos)):
-				color = propagateLighting(pos, flipDirection(emitter.direction));
-				lightingDataPos.data[emitter.direction].color |= color;
-				lightingDataPos.calculateTotalColor();
+			if (lighting_data.has(pos)):
+				color = propagate_lighting(pos, flip_direction(emitter.direction));
+				lighting_data_pos.data[emitter.direction].color |= color;
+				lighting_data_pos.calculate_total_color();
 			else:
-				lightingDataPos.calculateTotalColor();
-				lightingData[pos] = lightingDataPos;
+				lighting_data_pos.calculate_total_color();
+				lighting_data[pos] = lighting_data_pos;
 	
 	# Handle shadows.
-	for endPos : Vector2i in endPoints:
-		for endInfo : Dictionary in endPoints[endPos]:
-			var direction : Direction = endInfo["direction"];
-			var color : int = endInfo["color"] | LightingValue.Shadow;
+	for end_pos : Vector2i in end_points:
+		for end_info : Dictionary in end_points[end_pos]:
+			var direction : Direction = end_info["direction"];
+			var color : int = end_info["color"] | LightingValue.Shadow;
 			
-			var pos : Vector2i = endPos;
-			var originPos : Vector2i = endPos;
+			var pos : Vector2i = end_pos;
+			var origin_pos : Vector2i = end_pos;
 			match (direction):
-				Direction.Direction_Up: originPos.y += 1;
-				Direction.Direction_Right: originPos.x -= 1;
-				Direction.Direction_Down: originPos.y -= 1;
-				Direction.Direction_Left: originPos.x += 1;
+				Direction.Direction_Up: origin_pos.y += 1;
+				Direction.Direction_Right: origin_pos.x -= 1;
+				Direction.Direction_Down: origin_pos.y -= 1;
+				Direction.Direction_Left: origin_pos.x += 1;
 			
-			if (lightingData.has(originPos)):
-				color = lightingData[originPos].color | LightingValue.Shadow;
+			if (lighting_data.has(origin_pos)):
+				color = lighting_data[origin_pos].color | LightingValue.Shadow;
 			
-			var maxLength : int = 100;
-			while (maxLength > 0):
-				maxLength -= 1;
+			var max_length : int = 100;
+			while (max_length > 0):
+				max_length -= 1;
 				
 				match (direction):
 					Direction.Direction_Up: pos.y -= 1;
@@ -120,144 +125,147 @@ func updateLighting() -> void:
 					Direction.Direction_Down: pos.y += 1;
 					Direction.Direction_Left: pos.x -= 1;
 				
-				if (checkIfSolid(pos)):
+				if (check_if_solid(pos)):
 					break;
 	
-				if (lightingData.has(pos)):
-					var lightingDataPos : LightData = lightingData[pos];
-					if (lightingDataPos.data[flipDirection(direction)].color): 
-						if (lightingDataPos.data[flipDirection(direction)].isInput || \
-							!(lightingDataPos.data[flipDirection(direction)].color & LightingValue.Shadow)):
+				if (lighting_data.has(pos)):
+					var lighting_data_pos : LightData = lighting_data[pos];
+					if (lighting_data_pos.data[flip_direction(direction)].color): 
+						if (lighting_data_pos.data[flip_direction(direction)].is_input || \
+							!(lighting_data_pos.data[flip_direction(direction)].color & LightingValue.Shadow)):
 							break;
 					
-					lightingDataPos.data[flipDirection(direction)].color |= color;
-					lightingDataPos.data[flipDirection(direction)].isInput = true;
+					lighting_data_pos.data[flip_direction(direction)].color |= color;
+					lighting_data_pos.data[flip_direction(direction)].is_input = true;
 					
 					# Don't propagate into lighting.
-					if (!(lightingDataPos.color & LightingValue.Shadow)): break;
+					if (!(lighting_data_pos.color & LightingValue.Shadow)): break;
 					
 					# Propagate shadows.
-					lightingDataPos.data[direction].color |= color;
-					color = propagateLighting(pos, flipDirection(direction));
+					lighting_data_pos.data[direction].color |= color;
+					color = propagate_lighting(pos, flip_direction(direction));
 				else:
-					var lightingDataPos : LightData = LightData.new();
-					lightingDataPos.data[direction].color |= color;
-					lightingDataPos.data[flipDirection(direction)].color |= color;
-					lightingDataPos.data[flipDirection(direction)].isInput = true;
-					lightingDataPos.calculateTotalColor();
-					lightingData[pos] = lightingDataPos;
+					var lighting_data_pos : LightData = LightData.new();
+					lighting_data_pos.data[direction].color |= color;
+					lighting_data_pos.data[flip_direction(direction)].color |= color;
+					lighting_data_pos.data[flip_direction(direction)].is_input = true;
+					lighting_data_pos.calculate_total_color();
+					lighting_data[pos] = lighting_data_pos;
 	
 	queue_redraw();
 
-func propagateLighting(pos : Vector2i, _fromDirection : Direction) -> int:
+func propagate_lighting(p_pos : Vector2i, _fromDirection : Direction) -> int:
 	# Get lighting point data.
-	if (!lightingData.has(pos)): return 0;
-	var lightingDataPos : LightData = lightingData[pos];
+	if (!lighting_data.has(p_pos)): return 0;
+	var lighting_data_pos : LightData = lighting_data[p_pos];
 	
 	# Make sure color is calculated.
-	var previousColor : int = lightingDataPos.color;
-	lightingDataPos.calculateTotalColor();
-	var color : int = lightingDataPos.color;
+	var previous_color : int = lighting_data_pos.color;
+	lighting_data_pos.calculate_total_color();
+	var color : int = lighting_data_pos.color;
 	
-	if (color == previousColor): return color;
+	if (color == previous_color): return color;
 	
 	# Find propagation targets.
-	var propagationDirections : Array[Direction] = [ ];
-	for lightInfo : LightingInformation in lightingDataPos.data:
-		if (lightInfo.isInput):
-			propagationDirections.push_back(flipDirection(lightInfo.direction));
+	var propagation_directions : Array[Direction] = [ ];
+	for light_info : LightingInformation in lighting_data_pos.data:
+		if (light_info.is_input):
+			propagation_directions.push_back(flip_direction(light_info.direction));
 	
 	# Propagate.
-	for direction : Direction in propagationDirections:
-		lightingDataPos.data[direction].color = color;
+	for direction : Direction in propagation_directions:
+		lighting_data_pos.data[direction].color = color;
 		
-		var targetPos : Vector2i = pos;
+		var target_pos : Vector2i = p_pos;
 		match (direction):
-			Direction.Direction_Up: targetPos.y -= 1;
-			Direction.Direction_Right: targetPos.x += 1;
-			Direction.Direction_Down: targetPos.y += 1;
-			Direction.Direction_Left: targetPos.x -= 1;
+			Direction.Direction_Up: target_pos.y -= 1;
+			Direction.Direction_Right: target_pos.x += 1;
+			Direction.Direction_Down: target_pos.y += 1;
+			Direction.Direction_Left: target_pos.x -= 1;
 		
-		if (lightingData.has(targetPos)):
-			var lightingDataTargetPos : LightData = lightingData[targetPos];
-			lightingDataTargetPos.data[flipDirection(direction)].color = color;
-			propagateLighting(targetPos, flipDirection(direction));
+		if (lighting_data.has(target_pos)):
+			var lighting_data_target_pos : LightData = lighting_data[target_pos];
+			lighting_data_target_pos.data[flip_direction(direction)].color = color;
+			propagate_lighting(target_pos, flip_direction(direction));
 		
 	return color;
 
 func _ready() -> void:
-	updateLighting();
+	update_lighting();
 
-func addEmitter(emitter : Emitter) -> bool:
-	for e : Emitter in emitters:
-		if (e.position == emitter.position):
+################################################################################
+# Emitter stuff
+
+func add_emitter(p_emitter : Emitter) -> bool:
+	for emitter : Emitter in emitters:
+		if (emitter.position == p_emitter.position):
 			return false;
 	
-	emitters.push_back(emitter);
+	emitters.push_back(p_emitter);
 	return true;
 	
-func removeEmitter(emitterPos : Vector2i) -> void:
+func remove_emitter(p_emitter_pos : Vector2i) -> void:
 	for i : int in range(len(emitters)):
-		if (emitters[i].position == emitterPos):
+		if (emitters[i].position == p_emitter_pos):
 			emitters.remove_at(i);
 			break;
 	
-func moveEmitter(emitterPos : Vector2i, newPos : Vector2i) -> void:
-	var emitter : Emitter = null;
-	for e : Emitter in emitters:
-		if (e.position == emitterPos):
-			emitter = e;
+func move_emitter(p_emitter_pos : Vector2i, p_new_pos : Vector2i) -> void:
+	var temp_emitter : Emitter = null;
+	for emitter : Emitter in emitters:
+		if (emitter.position == p_emitter_pos):
+			temp_emitter = emitter;
 			break;
 	
-	if (addEmitter(Emitter.new(newPos, emitter.color, emitter.direction))):
-		removeEmitter(emitterPos);
+	if (add_emitter(Emitter.new(p_new_pos, temp_emitter.color, temp_emitter.direction))):
+		remove_emitter(p_emitter_pos);
 	
-func enableEmitter(emitterPos : Vector2i) -> void:
+func enable_emitter(p_emitter_pos : Vector2i) -> void:
 	for emitter : Emitter in emitters:
-		if (emitter.position == emitterPos):
+		if (emitter.position == p_emitter_pos):
 			emitter.enabled = true;
 			break;
 			
-func disableEmitter(emitterPos : Vector2i) -> void:
+func disable_emitter(p_emitter_pos : Vector2i) -> void:
 	for emitter : Emitter in emitters:
-		if (emitter.position == emitterPos):
+		if (emitter.position == p_emitter_pos):
 			emitter.enabled = false;
 			break;
 	
-func clearEmitters() -> void:
+func clear_emitters() -> void:
 	emitters.clear();
-	
+
+################################################################################
+
 func _draw() -> void:
-	const lightingWidth = 8;
 	
-	for pos : Vector2i in lightingData:
-		var midPoint : Vector2 = Vector2(pos) + Vector2(0.5, 0.5);
-		var _midLighting : int = 0;
-		for lightingInfo : LightingInformation in lightingData[pos].data:
-			if (!lightingInfo.color): continue;
+	for pos : Vector2i in lighting_data:
+		var mid_point : Vector2 = Vector2(pos) + Vector2(0.5, 0.5);
+		for lighting_info : LightingInformation in lighting_data[pos].data:
+			if (!lighting_info.color): continue;
 			
-			var sidePos : Vector2 = Vector2(pos);
-			match (lightingInfo.direction):
+			var side_pos : Vector2 = Vector2(pos);
+			match (lighting_info.direction):
 				Direction.Direction_Up: 
-					sidePos.x += 0.5;
+					side_pos.x += 0.5;
 				Direction.Direction_Right: 
-					sidePos.x += 1.0; 
-					sidePos.y += 0.5;
+					side_pos.x += 1.0; 
+					side_pos.y += 0.5;
 				Direction.Direction_Down: 
-					sidePos.x += 0.5; 
-					sidePos.y += 1.0;
+					side_pos.x += 0.5; 
+					side_pos.y += 1.0;
 				Direction.Direction_Left: 
-					sidePos.y += 0.5;
+					side_pos.y += 0.5;
 			
 			draw_line(
-				sidePos * tileScale, 
-				midPoint * tileScale, 
-				getLightingColor(lightingInfo.color), lightingWidth, false
+				side_pos * TILE_SCALE, 
+				mid_point * TILE_SCALE, 
+				get_lighting_color(lighting_info.color), LIGHTING_WIDTH, false
 			);
 			
 		@warning_ignore("integer_division")
 		draw_line(
-			(midPoint * tileScale) + Vector2(0, lightingWidth / 2), 
-			(midPoint * tileScale) + Vector2(0, -lightingWidth / 2), 
-			getLightingColor(lightingData[pos].color), lightingWidth, false
+			(mid_point * TILE_SCALE) + Vector2(0, LIGHTING_WIDTH / 2), 
+			(mid_point * TILE_SCALE) + Vector2(0, -LIGHTING_WIDTH / 2), 
+			get_lighting_color(lighting_data[pos].color), LIGHTING_WIDTH, false
 		);

@@ -9,8 +9,8 @@ var direction : Lighting.Direction;
 
 ################################################################################
 
-func _init(_position : Vector2i, _color : int, _direction : Lighting.Direction) -> void:
+func _init(p_position : Vector2i, p_color : int, p_direction : Lighting.Direction) -> void:
 	enabled = true;
-	position = _position;
-	color = _color;
-	direction = _direction;
+	position = p_position;
+	color = p_color;
+	direction = p_direction;

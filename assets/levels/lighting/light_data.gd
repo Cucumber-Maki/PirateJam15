@@ -11,13 +11,13 @@ func _init() -> void:
 	];
 	color = 0;
 	
-func calculateTotalColor() -> void:
+func calculate_total_color() -> void:
 	color = 0;
-	var shadowColor : int = 0;
-	for lightingInfo : LightingInformation in data:
-		if (lightingInfo.isInput): 
-			if (lightingInfo.color & Lighting.LightingValueShadowMask): shadowColor |= lightingInfo.color;
-			else: color |= lightingInfo.color & Lighting.LightingValueColorMask;;
+	var shadow_color : int = 0;
+	for lighting_info : LightingInformation in data:
+		if (lighting_info.is_input): 
+			if (lighting_info.color & Lighting.LIGHTING_VALUE_SHADOW_MASK): shadow_color |= lighting_info.color;
+			else: color |= lighting_info.color & Lighting.LIGHTING_VALUE_COLOR_MASK;
 			
-	if (color == 0 && shadowColor != 0):
-		color = shadowColor;
+	if (color == 0 && shadow_color != 0):
+		color = shadow_color;

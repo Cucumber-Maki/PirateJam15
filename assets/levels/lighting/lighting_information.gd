@@ -2,13 +2,13 @@ class_name LightingInformation
 
 ################################################################################
 
-var isInput : bool;
+var is_input : bool;
 var color : int;
 var direction : Lighting.Direction;
 
 ################################################################################
 
-func _init(_direction : Lighting.Direction) -> void:
-	isInput = false;
+func _init(p_direction : Lighting.Direction) -> void:
+	is_input = false;
 	color = 0;
-	direction = _direction;
+	direction = p_direction;

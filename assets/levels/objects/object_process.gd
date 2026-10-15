@@ -20,8 +20,8 @@ func onEntityMove(entityType : EntityTileType, from : Vector2i, to : Vector2i) -
 				levelComplete = true;
 		
 		EntityTileType.EntityTileType_Light:
-			$Lighting.moveEmitter(from, to);
-			$Lighting.enableEmitter(to);
+			$Lighting.move_emitter(from, to);
+			$Lighting.enable_emitter(to);
 	
 	updateLighting();			
 
@@ -103,7 +103,7 @@ var endPos : Vector2i = Vector2i(9999, 9999);
 var lightButtons : Array[LightButton];
 var doors : Array[Door];
 func registerLighting() -> void:
-	$Lighting.clearEmitters();
+	$Lighting.clear_emitters();
 	
 	var entityRect : Rect2i = $Entities.get_used_rect();
 	for x in range(entityRect.size.x):
@@ -116,7 +116,7 @@ func registerLighting() -> void:
 					var direction : Lighting.Direction = lightCoord.y as Lighting.Direction;
 					var color : int = lightCoord.x - 1;
 					
-					$Lighting.addEmitter(Emitter.new(pos, color, direction));
+					$Lighting.add_emitter(Emitter.new(pos, color, direction));
 					
 				EntityTileType.EntityTileType_DoorClose:
 					var doorCoord : Vector2i = $Entities.get_cell_atlas_coords(0, pos);
@@ -143,12 +143,12 @@ func registerLighting() -> void:
 					endPos = pos;
 
 func updateLighting() -> void:
-	$Lighting.updateLighting();
+	$Lighting.update_lighting();
 	var postLightingUpdateNeeded : bool = false;
 	
 	# Process buttons.
 	for lightButton : LightButton in lightButtons:
-		var lightLit : bool = $Lighting.lightingData.has(lightButton.position) && $Lighting.lightingData[lightButton.position].color == lightButton.color;
+		var lightLit : bool = $Lighting.lighting_data.has(lightButton.position) && $Lighting.lighting_data[lightButton.position].color == lightButton.color;
 		
 		if (lightButton.lit == lightLit): continue;
 		lightButton.lit = lightLit;
@@ -156,7 +156,7 @@ func updateLighting() -> void:
 		$BackgroundEntities.set_cell(
 			0, lightButton.position, 
 			$BackgroundEntities.get_cell_source_id(0, lightButton.position),
-			Vector2i((lightButton.color & Lighting.LightingValueColorMask) - 1, (1 if lightButton.lit else 0) + (2 if lightButton.color & Lighting.LightingValue.Shadow else 0)),
+			Vector2i((lightButton.color & Lighting.LIGHTING_VALUE_COLOR_MASK) - 1, (1 if lightButton.lit else 0) + (2 if lightButton.color & Lighting.LightingValue.Shadow else 0)),
 		);
 	
 		$Wiring.setInput(lightButton.position, lightButton.lit);	
@@ -173,20 +173,20 @@ func updateLighting() -> void:
 				$Entities.set_cell(
 					0, door.position, 
 					0,
-					Vector2i((door.color & Lighting.LightingValueColorMask) + 8, 1 if door.color & Lighting.LightingValueShadowMask else 0),
+					Vector2i((door.color & Lighting.LIGHTING_VALUE_COLOR_MASK) + 8, 1 if door.color & Lighting.LIGHTING_VALUE_SHADOW_MASK else 0),
 				);
 			$BackgroundEntities.set_cell(0, door.position);
 		else:
 			$BackgroundEntities.set_cell(
 				0, door.position, 
 				0,
-				Vector2i((door.color & Lighting.LightingValueColorMask) + 6, 1 if door.color & Lighting.LightingValueShadowMask else 0),
+				Vector2i((door.color & Lighting.LIGHTING_VALUE_COLOR_MASK) + 6, 1 if door.color & Lighting.LIGHTING_VALUE_SHADOW_MASK else 0),
 			);
 			if (getEntityTileType(door.position) == EntityTileType.EntityTileType_DoorClose):
 				$Entities.set_cell(0, door.position);
 	
 	if (postLightingUpdateNeeded):
-		$Lighting.updateLighting();
+		$Lighting.update_lighting();
 	
 func _ready() -> void:
 	registerLighting();
@@ -275,7 +275,7 @@ func processInput() -> void:
 		
 		match (getEntityTypeFromAtlas(entityAtlas)):
 			EntityTileType.EntityTileType_Light:
-				$Lighting.disableEmitter(targetPos);
+				$Lighting.disable_emitter(targetPos);
 				
 				if (!(entityAtlas.y == playerAtlas.y || entityAtlas.y == ((playerAtlas.y + 2) % 4))):
 					updateLighting();
