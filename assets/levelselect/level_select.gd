@@ -43,8 +43,7 @@ func _ready() -> void:
 		var end := path.rfind(".");
 		return path.substr(start, end - start);
 	));
-	print_debug(levelPaths)
-	print_debug(levelNames)
+	
 	# Add level buttons.
 	for i in range(min(levelPaths.size(), levelNames.size())):
 		var instance : Control = levelGoto.instantiate();

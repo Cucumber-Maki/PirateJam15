@@ -5,7 +5,7 @@ func setLevel(levelName : String, _scenePath : String) -> void:
 	self.text = levelName;
 	scenePath = _scenePath;
 	
-	var artefactPath : String = ArtefactConfig.getLevelArtefactPath(levelName);
+	var artefactPath : String = ArtefactConfig.get_level_artefact_path(levelName);
 	if (ResourceLoader.exists(artefactPath)):
 		$Artefact.texture = ResourceLoader.load(artefactPath);
 	
