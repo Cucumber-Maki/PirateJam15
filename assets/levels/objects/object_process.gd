@@ -122,7 +122,7 @@ func registerLighting() -> void:
 					var doorCoord : Vector2i = $Entities.get_cell_atlas_coords(0, pos);
 
 					var color : int = doorCoord.x - 8;
-					if (doorCoord.y >= 1): color |= Lighting.LightingValue.Shadow;
+					if (doorCoord.y >= 1): color |= Lighting.LightingValue.SHADOW;
 					
 					doors.push_back(Door.new(pos, color));
 					
@@ -135,7 +135,7 @@ func registerLighting() -> void:
 					var buttonCoord : Vector2i = $BackgroundEntities.get_cell_atlas_coords(0, pos);
 					
 					var color : int = buttonCoord.x + 1;
-					if (buttonCoord.y >= 2): color |= Lighting.LightingValue.Shadow;
+					if (buttonCoord.y >= 2): color |= Lighting.LightingValue.SHADOW;
 					
 					lightButtons.push_back(LightButton.new(pos, color));
 					
@@ -156,7 +156,7 @@ func updateLighting() -> void:
 		$BackgroundEntities.set_cell(
 			0, lightButton.position, 
 			$BackgroundEntities.get_cell_source_id(0, lightButton.position),
-			Vector2i((lightButton.color & Lighting.LIGHTING_VALUE_COLOR_MASK) - 1, (1 if lightButton.lit else 0) + (2 if lightButton.color & Lighting.LightingValue.Shadow else 0)),
+			Vector2i((lightButton.color & Lighting.LIGHTING_VALUE_COLOR_MASK) - 1, (1 if lightButton.lit else 0) + (2 if lightButton.color & Lighting.LightingValue.SHADOW else 0)),
 		);
 	
 		$Wiring.setInput(lightButton.position, lightButton.lit);	

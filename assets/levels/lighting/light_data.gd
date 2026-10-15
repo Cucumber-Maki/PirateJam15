@@ -4,10 +4,10 @@ var data : Array[LightingInformation];
 
 func _init() -> void:
 	data = [
-		LightingInformation.new(Lighting.Direction.Direction_Up),
-		LightingInformation.new(Lighting.Direction.Direction_Right),
-		LightingInformation.new(Lighting.Direction.Direction_Down),
-		LightingInformation.new(Lighting.Direction.Direction_Left),
+		LightingInformation.new(Lighting.Direction.UP),
+		LightingInformation.new(Lighting.Direction.RIGHT),
+		LightingInformation.new(Lighting.Direction.DOWN),
+		LightingInformation.new(Lighting.Direction.LEFT),
 	];
 	color = 0;
 	

@@ -7,22 +7,22 @@ const TILE_SCALE : float = 36.0;
 const LIGHTING_WIDTH = 8;
 
 enum Direction {
-	Direction_Up,
-	Direction_Right,
-	Direction_Down,
-	Direction_Left,
+	UP,
+	RIGHT,
+	DOWN,
+	LEFT,
 };
 func flip_direction(p_direction : Direction) -> Direction:
 	return ((p_direction + 2) % 4) as Direction;
 	
 enum LightingValue {
-	Red = 1 << 0,
-	Green = 1 << 1,
-	Blue = 1 << 2,
-	Shadow = 1 << 3,
+	RED = 1 << 0,
+	GREEN = 1 << 1,
+	BLUE = 1 << 2,
+	SHADOW = 1 << 3,
 };
-const LIGHTING_VALUE_COLOR_MASK : int = LightingValue.Red | LightingValue.Green | LightingValue.Blue;
-const LIGHTING_VALUE_SHADOW_MASK : int = LightingValue.Shadow;
+const LIGHTING_VALUE_COLOR_MASK : int = LightingValue.RED | LightingValue.GREEN | LightingValue.BLUE;
+const LIGHTING_VALUE_SHADOW_MASK : int = LightingValue.SHADOW;
 
 var emitters : Array[Emitter] = [];
 
@@ -41,10 +41,10 @@ func check_if_shadowable(p_pos : Vector2i) -> bool:
 		
 func get_lighting_color(p_lighting : int) -> Color:
 	var color : Color = Color.BLACK;
-	if (p_lighting & LightingValue.Red): color.r = 1.0;
-	if (p_lighting & LightingValue.Green): color.g = 1.0;
-	if (p_lighting & LightingValue.Blue): color.b = 1.0;
-	if (p_lighting & LightingValue.Shadow):
+	if (p_lighting & LightingValue.RED): color.r = 1.0;
+	if (p_lighting & LightingValue.GREEN): color.g = 1.0;
+	if (p_lighting & LightingValue.BLUE): color.b = 1.0;
+	if (p_lighting & LightingValue.SHADOW):
 		color.r *= 0.5;
 		color.g *= 0.5;
 		color.b *= 0.5;
@@ -66,10 +66,10 @@ func update_lighting() -> void:
 			max_length -= 1;
 			
 			match (emitter.direction):
-				Direction.Direction_Up: pos.y -= 1;
-				Direction.Direction_Right: pos.x += 1;
-				Direction.Direction_Down: pos.y += 1;
-				Direction.Direction_Left: pos.x -= 1;
+				Direction.UP: pos.y -= 1;
+				Direction.RIGHT: pos.x += 1;
+				Direction.DOWN: pos.y += 1;
+				Direction.LEFT: pos.x -= 1;
 			
 			if (check_if_solid(pos)):
 				if (check_if_shadowable(pos)):
@@ -102,28 +102,28 @@ func update_lighting() -> void:
 	for end_pos : Vector2i in end_points:
 		for end_info : Dictionary in end_points[end_pos]:
 			var direction : Direction = end_info["direction"];
-			var color : int = end_info["color"] | LightingValue.Shadow;
+			var color : int = end_info["color"] | LightingValue.SHADOW;
 			
 			var pos : Vector2i = end_pos;
 			var origin_pos : Vector2i = end_pos;
 			match (direction):
-				Direction.Direction_Up: origin_pos.y += 1;
-				Direction.Direction_Right: origin_pos.x -= 1;
-				Direction.Direction_Down: origin_pos.y -= 1;
-				Direction.Direction_Left: origin_pos.x += 1;
+				Direction.UP: origin_pos.y += 1;
+				Direction.RIGHT: origin_pos.x -= 1;
+				Direction.DOWN: origin_pos.y -= 1;
+				Direction.LEFT: origin_pos.x += 1;
 			
 			if (lighting_data.has(origin_pos)):
-				color = lighting_data[origin_pos].color | LightingValue.Shadow;
+				color = lighting_data[origin_pos].color | LightingValue.SHADOW;
 			
 			var max_length : int = 100;
 			while (max_length > 0):
 				max_length -= 1;
 				
 				match (direction):
-					Direction.Direction_Up: pos.y -= 1;
-					Direction.Direction_Right: pos.x += 1;
-					Direction.Direction_Down: pos.y += 1;
-					Direction.Direction_Left: pos.x -= 1;
+					Direction.UP: pos.y -= 1;
+					Direction.RIGHT: pos.x += 1;
+					Direction.DOWN: pos.y += 1;
+					Direction.LEFT: pos.x -= 1;
 				
 				if (check_if_solid(pos)):
 					break;
@@ -132,14 +132,14 @@ func update_lighting() -> void:
 					var lighting_data_pos : LightData = lighting_data[pos];
 					if (lighting_data_pos.data[flip_direction(direction)].color): 
 						if (lighting_data_pos.data[flip_direction(direction)].is_input || \
-							!(lighting_data_pos.data[flip_direction(direction)].color & LightingValue.Shadow)):
+							!(lighting_data_pos.data[flip_direction(direction)].color & LightingValue.SHADOW)):
 							break;
 					
 					lighting_data_pos.data[flip_direction(direction)].color |= color;
 					lighting_data_pos.data[flip_direction(direction)].is_input = true;
 					
 					# Don't propagate into lighting.
-					if (!(lighting_data_pos.color & LightingValue.Shadow)): break;
+					if (!(lighting_data_pos.color & LightingValue.SHADOW)): break;
 					
 					# Propagate shadows.
 					lighting_data_pos.data[direction].color |= color;
@@ -178,10 +178,10 @@ func propagate_lighting(p_pos : Vector2i, _fromDirection : Direction) -> int:
 		
 		var target_pos : Vector2i = p_pos;
 		match (direction):
-			Direction.Direction_Up: target_pos.y -= 1;
-			Direction.Direction_Right: target_pos.x += 1;
-			Direction.Direction_Down: target_pos.y += 1;
-			Direction.Direction_Left: target_pos.x -= 1;
+			Direction.UP: target_pos.y -= 1;
+			Direction.RIGHT: target_pos.x += 1;
+			Direction.DOWN: target_pos.y += 1;
+			Direction.LEFT: target_pos.x -= 1;
 		
 		if (lighting_data.has(target_pos)):
 			var lighting_data_target_pos : LightData = lighting_data[target_pos];
@@ -238,7 +238,6 @@ func clear_emitters() -> void:
 ################################################################################
 
 func _draw() -> void:
-	
 	for pos : Vector2i in lighting_data:
 		var mid_point : Vector2 = Vector2(pos) + Vector2(0.5, 0.5);
 		for lighting_info : LightingInformation in lighting_data[pos].data:
@@ -246,15 +245,15 @@ func _draw() -> void:
 			
 			var side_pos : Vector2 = Vector2(pos);
 			match (lighting_info.direction):
-				Direction.Direction_Up: 
+				Direction.UP: 
 					side_pos.x += 0.5;
-				Direction.Direction_Right: 
+				Direction.RIGHT: 
 					side_pos.x += 1.0; 
 					side_pos.y += 0.5;
-				Direction.Direction_Down: 
+				Direction.DOWN: 
 					side_pos.x += 0.5; 
 					side_pos.y += 1.0;
-				Direction.Direction_Left: 
+				Direction.LEFT: 
 					side_pos.y += 0.5;
 			
 			draw_line(
